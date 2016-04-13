@@ -1,6 +1,6 @@
-function imSaida = abertura(imEntrada)
+function imSaida = abertura(imEntrada,tamanhoDoElementoEstruturante)
 
-    elementoEstruturante = strel('disk',5);
+    elementoEstruturante = strel('disk',tamanhoDoElementoEstruturante);
     imSaida = imopen(imEntrada,elementoEstruturante);
 
 end

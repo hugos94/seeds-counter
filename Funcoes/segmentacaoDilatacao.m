@@ -1,6 +1,4 @@
-function imSaida = processamento(imEntrada)
-    
-%     imBordas = imgradient(imEntrada);
+function imSaida = segmentacaoDilatacao(imEntrada)
     
     imDilatada = dilatacao(imEntrada);
     

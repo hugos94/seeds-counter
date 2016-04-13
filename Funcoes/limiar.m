@@ -1,22 +1,7 @@
-function imagemSaida = limiar(imagemEntrada, limiteInferior, limiteSuperior)
+function imSaida = limiar(imEntrada, limiteInferior, limiteSuperior)
 
-    mascara = imagemEntrada>=limiteInferior & imagemEntrada<=limiteSuperior;
-      
-%     imagemSaida = times(imagemEntrada,uint8(mascara));
+    mascara = imEntrada>=limiteInferior & imEntrada<=limiteSuperior;
     
-%     componentesConectadas = bwconncomp(mascara);
+    imSaida = mascara;
     
-    imprimir = uint8(mascara);
-    
-    imprimir(imprimir==1) = 255;
-    
-    imshow(imprimir);
-    
-%     labeled = labelmatrix(componentesConectadas);
-%     RGB_label = label2rgb(labeled, @copper, 'c', 'shuffle');
-
-    
-    
-
-
 end
