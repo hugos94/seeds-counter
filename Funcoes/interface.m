@@ -85,6 +85,16 @@ function abrir_Callback(hObject, eventdata, handles)
 % hObject    handle to abrir (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+[filename,canceled] = imgetfile;
+if ~canceled
+     set(handles.axes1, 'visible', 'on');
+     handles.arquivo = filename;
+     handles.imagem = imread(filename);
+     axes(handles.axes1);
+     imshow(handles.imagem);
+end
+handles.px2min = NaN;
+guidata(hObject,handles)
 
 
 % --------------------------------------------------------------------
@@ -92,6 +102,12 @@ function salvar_Callback(hObject, eventdata, handles)
 % hObject    handle to salvar (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+[filename,canceled] = imsave;
+if ~canceled
+     imwrite(handles.resultado, filename);
+end
+handles.px2min = NaN;
+guidata(hObject,handles)
 
 
 % --------------------------------------------------------------------
