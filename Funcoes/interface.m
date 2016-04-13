@@ -22,7 +22,7 @@ function varargout = interface(varargin)
 
 % Edit the above text to modify the response to help interface
 
-% Last Modified by GUIDE v2.5 13-Apr-2016 17:33:51
+% Last Modified by GUIDE v2.5 13-Apr-2016 17:44:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -81,38 +81,38 @@ function arquivo_Callback(hObject, eventdata, handles)
 
 
 % --------------------------------------------------------------------
-function abrir_Callback(hObject, eventdata, handles)
-% hObject    handle to abrir (see GCBO)
+function open_file_Callback(hObject, eventdata, handles)
+% hObject    handle to open_file (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [filename,canceled] = imgetfile;
 if ~canceled
      set(handles.axes1, 'visible', 'on');
      handles.arquivo = filename;
-     handles.imagem = imread(filename);
+     handles.image = imread(filename);
      axes(handles.axes1);
-     imshow(handles.imagem);
+     imshow(handles.image);
 end
 handles.px2min = NaN;
 guidata(hObject,handles)
 
 
 % --------------------------------------------------------------------
-function salvar_Callback(hObject, eventdata, handles)
-% hObject    handle to salvar (see GCBO)
+function save_file_Callback(hObject, eventdata, handles)
+% hObject    handle to save_file (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [filename,canceled] = imsave;
 if ~canceled
-     imwrite(handles.resultado, filename);
+     imwrite(handles.result, filename);
 end
 handles.px2min = NaN;
 guidata(hObject,handles)
 
 
 % --------------------------------------------------------------------
-function sair_Callback(hObject, eventdata, handles)
-% hObject    handle to sair (see GCBO)
+function exit_Callback(hObject, eventdata, handles)
+% hObject    handle to exit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -142,18 +142,40 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 
-% --- Executes on button press in pushbutton1.
-function pushbutton1_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton1 (see GCBO)
+% --- Executes on button press in median_filter_button.
+function median_filter_button_Callback(hObject, eventdata, handles)
+% hObject    handle to median_filter_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+red_band = handles.image(:,:,1);
+handles.result = filtroMediana(red_band);
+set(handles.axes2, 'visible', 'on');
+axes(handles.axes2);
+imshow(handles.result);
 
-% --- Executes on button press in pushbutton2.
-function pushbutton2_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton2 (see GCBO)
+
+% --- Executes on button press in histogram_equalizer_button.
+function histogram_equalizer_button_Callback(hObject, eventdata, handles)
+% hObject    handle to histogram_equalizer_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+handles.result = equalizarHistograma(handles.result);
+set(handles.axes2, 'visible', 'on');
+axes(handles.axes2);
+imshow(handles.result);
+
+% --- Executes on button press in edge_detection_button.
+function edge_detection_button_Callback(hObject, eventdata, handles)
+% hObject    handle to edge_detection_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+handles.result = segmentacaoDilatacao(handles.result);
+set(handles.axes2, 'visible', 'on');
+axes(handles.axes2);
+imshow(handles.result);
 
 
 % --- Executes on slider movement.
@@ -201,9 +223,9 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in execute_complete.
-function execute_complete_Callback(hObject, eventdata, handles)
-% hObject    handle to execute_complete (see GCBO)
+% --- Executes on button press in execute_complete_button.
+function execute_complete_button_Callback(hObject, eventdata, handles)
+% hObject    handle to execute_complete_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -231,29 +253,22 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in pushbutton4.
-function pushbutton4_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton4 (see GCBO)
+% --- Executes on button press in thresholding_button.
+function thresholding_button_Callback(hObject, eventdata, handles)
+% hObject    handle to thresholding_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 
-% --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton5 (see GCBO)
+% --- Executes on button press in regions_fill_button.
+function regions_fill_button_Callback(hObject, eventdata, handles)
+% hObject    handle to regions_fill_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 
-% --- Executes on button press in pushbutton6.
-function pushbutton6_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton6 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in pushbutton7.
-function pushbutton7_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton7 (see GCBO)
+% --- Executes on button press in counter_components_button.
+function counter_components_button_Callback(hObject, eventdata, handles)
+% hObject    handle to counter_components_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
