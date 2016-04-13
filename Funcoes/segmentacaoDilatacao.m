@@ -1,6 +1,6 @@
-function imSaida = segmentacaoDilatacao(imEntrada)
+function imSaida = segmentacaoDilatacao(imEntrada, tamanhoDoElementoEstruturante)
     
-    imDilatada = dilatacao(imEntrada);
+    imDilatada = dilatacao(imEntrada,tamanhoDoElementoEstruturante);
     
     imSaida = imDilatada-imEntrada;
 

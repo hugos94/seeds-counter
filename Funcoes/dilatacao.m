@@ -1,6 +1,6 @@
-function imSaida = dilatacao(imEntrada)
+function imSaida = dilatacao(imEntrada, tamanhoElementoEstruturante)
 
-    elementoEstruturante = strel('disk',20);
+    elementoEstruturante = strel('disk',tamanhoElementoEstruturante);
     imSaida = imdilate(imEntrada,elementoEstruturante);
 
 end

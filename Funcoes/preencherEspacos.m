@@ -1,6 +1,6 @@
-function imSaida = preencherEspacos(imEntrada)
+function imSaida = preencherEspacos(imEntrada, tamanhoDoElementoEstruturante)
 
-    imAberta = abertura(imEntrada,9);
+    imAberta = abertura(imEntrada,tamanhoDoElementoEstruturante);
     
     imSaida = imAberta;
 

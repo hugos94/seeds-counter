@@ -10,20 +10,20 @@ function contarGraos()
     
     pre = preprocessamento(R);
     
-    imSegmentada = segmentacaoDilatacao(pre);
+    imSegmentada = segmentacaoDilatacao(pre,20); % parametro tamanho do elemento estruturante
     
-    imLimiarizada = limiar(imSegmentada,90,255);
+    imLimiarizada = limiar(imSegmentada,90,255); % parametro limites inferior e superior
     
-    imPreenchida = preencherEspacos(imLimiarizada);
-
-%     teste = imEntrada.*repmat(uint8(imLimiarizada),[1,1,3]);
-%     //aplicar máscara a imagem de entrada
-
+    imPreenchida = preencherEspacos(imLimiarizada,9); % parametro tamanho do elemento estruturante
+    
+    imComMascara = aplicarMascara(imEntrada,imPreenchida);
+    
     [quantidade,imLabel] = contarComponentesConectadas(imPreenchida);
     
     quantidade
-
-    figure, imshow(imLabel);
     
+    figure, imshow(imComMascara);
+    
+    figure, imshow(imLabel);
     
 end
