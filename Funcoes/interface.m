@@ -22,7 +22,7 @@ function varargout = interface(varargin)
 
 % Edit the above text to modify the response to help interface
 
-% Last Modified by GUIDE v2.5 13-Apr-2016 17:44:14
+% Last Modified by GUIDE v2.5 14-Apr-2016 16:41:58
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -91,7 +91,12 @@ if ~canceled
      handles.arquivo = filename;
      handles.image = imread(filename);
      axes(handles.axes1);
+     [x,y,~] = size(handles.image);
+     set(handles.image_size, 'String', strcat('Tamanho da imagem: ', num2str(x), 'x', num2str(y))); %Altera o contador de elementos encontrados
      imshow(handles.image);
+     %set(handles.axes2, 'visible', 'off'); %Coloca o axes2 como visivel
+     %axes(handles.axes2);
+     %imshow();
 end
 handles.px2min = NaN;
 guidata(hObject,handles)
@@ -153,6 +158,7 @@ handles.result = filtroMediana(red_band);
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
+guidata(hObject,handles)
 
 
 % --- Executes on button press in histogram_equalizer_button.
@@ -165,6 +171,7 @@ handles.result = equalizarHistograma(handles.result);
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
+guidata(hObject,handles)
 
 % --- Executes on button press in edge_detection_button.
 function edge_detection_button_Callback(hObject, eventdata, handles)
@@ -176,6 +183,68 @@ handles.result = segmentacaoDilatacao(handles.result);
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
+guidata(hObject,handles)
+
+% --- Executes on button press in thresholding_button.
+function thresholding_button_Callback(hObject, eventdata, handles)
+% hObject    handle to thresholding_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+handles.result = limiar(handles.result,90,255);
+set(handles.axes2, 'visible', 'on');
+axes(handles.axes2);
+imshow(handles.result);
+guidata(hObject,handles)
+
+% --- Executes on button press in regions_fill_button.
+function regions_fill_button_Callback(hObject, eventdata, handles)
+% hObject    handle to regions_fill_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+handles.result = preencherEspacos(handles.result);
+set(handles.axes2, 'visible', 'on');
+axes(handles.axes2);
+imshow(handles.result);
+guidata(hObject,handles)
+
+% --- Executes on button press in elements_counter_button.
+function elements_counter_button_Callback(hObject, eventdata, handles)
+% hObject    handle to elements_counter_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+[quantidade,handles.result] = contarComponentesConectadas(handles.result);
+    
+set(handles.contador_label, 'String', strcat('Elementos encontrados:  ', num2str(quantidade))); %Altera o contador de elementos encontrados
+set(handles.axes2, 'visible', 'on'); %Coloca o axes2 como visivel
+axes(handles.axes2);
+imshow(handles.result);
+guidata(hObject,handles)
+
+% --- Executes on button press in execute_complete_button.
+function execute_complete_button_Callback(hObject, eventdata, handles)
+% hObject    handle to execute_complete_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+    red_band = handles.image(:,:,1); %Captura apenas a banda vermelha
+    
+    pre = preprocessamento(red_band);
+    
+    imSegmentada = segmentacaoDilatacao(pre);
+    
+    imLimiarizada = limiar(imSegmentada,90,255);
+    
+    imPreenchida = preencherEspacos(imLimiarizada);
+
+    [quantidade,imLabel] = contarComponentesConectadas(imPreenchida);
+    
+    set(handles.contador_label, 'String', strcat('Elementos encontrados:  ', num2str(quantidade))); %Altera o contador de elementos encontrados
+    set(handles.axes2, 'visible', 'on'); %Coloca o axes2 como visivel
+    axes(handles.axes2);
+    imshow(imLabel);
 
 
 % --- Executes on slider movement.
@@ -223,11 +292,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in execute_complete_button.
-function execute_complete_button_Callback(hObject, eventdata, handles)
-% hObject    handle to execute_complete_button (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
 
 
@@ -253,22 +317,39 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in thresholding_button.
-function thresholding_button_Callback(hObject, eventdata, handles)
-% hObject    handle to thresholding_button (see GCBO)
+% --- Executes on selection change in proportion_popup_menu.
+function proportion_popup_menu_Callback(hObject, eventdata, handles)
+% hObject    handle to proportion_popup_menu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+% Hints: contents = cellstr(get(hObject,'String')) returns proportion_popup_menu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from proportion_popup_menu
 
-% --- Executes on button press in regions_fill_button.
-function regions_fill_button_Callback(hObject, eventdata, handles)
-% hObject    handle to regions_fill_button (see GCBO)
+handles.proportion = get(hObject,'Value');
+% Save the handles structure.
+%guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function proportion_popup_menu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to proportion_popup_menu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in resize_button.
+function resize_button_Callback(hObject, eventdata, handles)
+% hObject    handle to resize_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.proportion
 
 
-% --- Executes on button press in counter_components_button.
-function counter_components_button_Callback(hObject, eventdata, handles)
-% hObject    handle to counter_components_button (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+
