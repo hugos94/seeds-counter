@@ -94,6 +94,7 @@ if ~canceled
      [x,y,~] = size(handles.image);
      set(handles.image_size, 'String', strcat('Tamanho da imagem: ', num2str(x), 'x', num2str(y))); %Altera o contador de elementos encontrados
      imshow(handles.image);
+     handles.proportion = 0.1;
      %set(handles.axes2, 'visible', 'off'); %Coloca o axes2 como visivel
      %axes(handles.axes2);
      %imshow();
@@ -326,9 +327,12 @@ function proportion_popup_menu_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns proportion_popup_menu contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from proportion_popup_menu
 
-handles.proportion = get(hObject,'Value');
+str = get(hObject, 'String');
+val = get(hObject,'Value');
+
+handles.proportion = str{val};
 % Save the handles structure.
-%guidata(hObject,handles)
+guidata(hObject,handles)
 
 
 % --- Executes during object creation, after setting all properties.
@@ -349,7 +353,14 @@ function resize_button_Callback(hObject, eventdata, handles)
 % hObject    handle to resize_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.proportion
+
+handles.image = imresize(handles.image, str2double(handles.proportion));
+
+axes(handles.axes1);
+[x,y,~] = size(handles.image);
+set(handles.image_size, 'String', strcat('Tamanho da imagem: ', num2str(x), 'x', num2str(y))); %Altera o contador de elementos encontrados
+imshow(handles.image);
+guidata(hObject,handles)
 
 
 
