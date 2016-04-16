@@ -180,7 +180,7 @@ function edge_detection_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.result = segmentacaoDilatacao(handles.result);
+handles.result = segmentacaoDilatacao(handles.result,20);
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
@@ -204,7 +204,7 @@ function regions_fill_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.result = preencherEspacos(handles.result);
+handles.result = preencherEspacos(handles.result,9);
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
