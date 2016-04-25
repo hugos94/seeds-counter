@@ -1,4 +1,4 @@
-function imSaida = segmentacaoDilatacao(imEntrada, tamanhoDoElementoEstruturante)
+function imSaida = deteccaoBordasDilatacao(imEntrada, tamanhoDoElementoEstruturante)
     
     imDilatada = dilatacao(imEntrada,tamanhoDoElementoEstruturante);
     

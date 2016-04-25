@@ -1,29 +1,86 @@
-function contarGraos()
+function contarGraos(qtClasses)
 
     clc
     
-    imEntrada = imread('C:\Users\zenote\Desktop\seeds-counter\Imagens\Teste4.jpg');
+    imEntrada = imread('..\Imagens\Teste4.jpg');
     
     R = imEntrada(:,:,1);
     
-    imshow(R);
+%     imshow(R);
     
     pre = preprocessamento(R);
     
-    imSegmentada = segmentacaoDilatacao(pre,20); % parametro tamanho do elemento estruturante
+    imBordas = deteccaoBordasDilatacao(pre,20); % parametro tamanho do elemento estruturante
     
-    imLimiarizada = limiar(imSegmentada,90,255); % parametro limites inferior e superior
+    imLimiarAutomatico = limiarAutomatico(imBordas);
     
-    imPreenchida = preencherEspacos(imLimiarizada,9); % parametro tamanho do elemento estruturante
+%     figure, imshow(imLimiarAutomatico);
     
-    imComMascara = aplicarMascara(imEntrada,imPreenchida);
+    imAberta = abertura(imLimiarAutomatico,5);
     
-    [quantidade,imLabel] = contarComponentesConectadas(imPreenchida);
+%     figure, imshow(imAberta);
+
+    imDilatada = dilatacao(imAberta,5);
     
-    quantidade
+%     figure, imshow(imDilatada);
     
-    figure, imshow(imComMascara);
+    imPreenchida = preencherEspacos(imDilatada,8); % parametro tamanho do elemento estruturante
+
+%     figure, imshow(imPreenchida);
     
-    figure, imshow(imLabel);
+    [total,~] = contarComponentesConectadas(imPreenchida);
+    
+    disp(['Total de grãos = ' num2str(total)]);
+    
+    imComMascara = aplicarMascara(R,imPreenchida);
+    
+%     figure, imshow(imComMascara);
+    
+    tamanhoDoIncrementoDeIntensidade = uint8(253/qtClasses);
+    
+    disp(['Tamanho do incremento =' num2str(tamanhoDoIncrementoDeIntensidade)]);
+    
+    limiteInferior = 0;
+    
+    limiteSuperior = tamanhoDoIncrementoDeIntensidade;
+    
+    for i = 1:qtClasses-1
+       
+       imClasse = limiar(imComMascara,limiteInferior,limiteSuperior);
+       
+%        figure, imshow(imClasse);
+       
+       imErodida = erosao(imClasse,2);
+       
+%        figure, imshow(imErodida);
+
+       imPreenchida = preencherEspacos(imErodida,8); % parametro tamanho do elemento estruturante
+
+%        figure, imshow(imPreenchida);
+       
+       imAberta = abertura(imPreenchida,20);
+    
+%        figure, imshow(imAberta);
+       
+       limiteInferior = limiteInferior+tamanhoDoIncrementoDeIntensidade;
+       
+       limiteSuperior = limiteSuperior+tamanhoDoIncrementoDeIntensidade;
+       
+       [quantidade,imLabel] = contarComponentesConectadas(imAberta);
+    
+%     figure, imshow(imLabel);
+
+       disp(['A classe ' num2str(i) ' tem ' num2str(quantidade) ' grãos']);
+       
+       imAberta = ~imAberta;
+       
+       imComMascara = aplicarMascara(imComMascara,imAberta);
+       
+       total = total-quantidade;
+       
+%        figure, imshow(imComMascara);
+    end
+    
+    disp(['A classe ' num2str(qtClasses) ' tem ' num2str(total) ' graos']);
     
 end

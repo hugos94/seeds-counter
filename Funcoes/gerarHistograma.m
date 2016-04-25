@@ -1,6 +1,6 @@
 function gerarHistograma( imagem )
 
-    hist(imagem);
+    hist(double(imagem));
      
 end
 

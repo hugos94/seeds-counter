@@ -1,7 +1,7 @@
-function imSaida = preencherEspacos(imEntrada, tamanhoDoElementoEstruturante)
-
-    imAberta = abertura(imEntrada,tamanhoDoElementoEstruturante);
+function imSaida = preencherEspacos(imEntrada, tamanhoDoGap)
     
-    imSaida = imAberta;
+    imEspacosPreenchidos = imfill(imEntrada,tamanhoDoGap,'holes');
+    
+    imSaida = imEspacosPreenchidos;
 
 end
