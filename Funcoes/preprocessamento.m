@@ -1,9 +1,7 @@
-function imSaida = preprocessamento(imEntrada)
+function imEqualizada = preprocessamento(imEntrada)
 
     imSemRuido = filtroMediana(imEntrada);
     
     imEqualizada = equalizarHistograma(imSemRuido);
     
-    imSaida = imEqualizada;
-
 end
