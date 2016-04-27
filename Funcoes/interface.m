@@ -22,7 +22,7 @@ function varargout = interface(varargin)
 
 % Edit the above text to modify the response to help interface
 
-% Last Modified by GUIDE v2.5 26-Apr-2016 22:55:38
+% Last Modified by GUIDE v2.5 26-Apr-2016 23:15:41
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -122,8 +122,8 @@ function median_filter_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-red_band = handles.image(:,:,1);
-handles.result = filtroMediana(red_band);
+handles.red_band = handles.image(:,:,1);
+handles.result = filtroMediana(handles.red_band);
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
@@ -142,17 +142,19 @@ axes(handles.axes2);
 imshow(handles.result);
 guidata(hObject,handles)
 
+
 % --- Executes on button press in edge_detection_button.
 function edge_detection_button_Callback(hObject, eventdata, handles)
 % hObject    handle to edge_detection_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.result = segmentacaoDilatacao(handles.result,20);
+handles.result = deteccaoBordasDilatacao(handles.result,20);
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
 guidata(hObject,handles)
+
 
 % --- Executes on button press in thresholding_button.
 function thresholding_button_Callback(hObject, eventdata, handles)
@@ -160,23 +162,51 @@ function thresholding_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.result = limiar(handles.result,90,255);
+handles.result = limiarAutomatico(handles.result);
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
 guidata(hObject,handles)
 
-% --- Executes on button press in regions_fill_button.
-function regions_fill_button_Callback(hObject, eventdata, handles)
-% hObject    handle to regions_fill_button (see GCBO)
+
+% --- Executes on button press in apperture_button.
+function apperture_button_Callback(hObject, eventdata, handles)
+% hObject    handle to apperture_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.result = preencherEspacos(handles.result,9);
+handles.result = abertura(handles.result,5);
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
 guidata(hObject,handles)
+
+
+% --- Executes on button press in dilatation_button.
+function dilatation_button_Callback(hObject, eventdata, handles)
+% hObject    handle to dilatation_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+handles.result = dilatacao(handles.result,5);
+set(handles.axes2, 'visible', 'on');
+axes(handles.axes2);
+imshow(handles.result);
+guidata(hObject,handles)
+
+
+% --- Executes on button press in fill_spaces_button.
+function fill_spaces_button_Callback(hObject, eventdata, handles)
+% hObject    handle to fill_spaces_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+handles.result = preencherEspacos(handles.result,8);
+set(handles.axes2, 'visible', 'on');
+axes(handles.axes2);
+imshow(handles.result);
+guidata(hObject,handles)
+
 
 % --- Executes on button press in elements_counter_button.
 function elements_counter_button_Callback(hObject, eventdata, handles)
@@ -184,8 +214,10 @@ function elements_counter_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-[quantidade,handles.result] = contarComponentesConectadas(handles.result);
-    
+[quantidade,~] = contarComponentesConectadas(handles.result);
+
+handles.result = aplicarMascara(handles.red_band,imPreenchida);
+
 set(handles.contador_label, 'String', strcat('Elementos encontrados:  ', num2str(quantidade))); %Altera o contador de elementos encontrados
 set(handles.axes2, 'visible', 'on'); %Coloca o axes2 como visivel
 axes(handles.axes2);
@@ -202,18 +234,85 @@ function execute_complete_button_Callback(hObject, eventdata, handles)
     
     pre = preprocessamento(red_band);
     
-    imSegmentada = segmentacaoDilatacao(pre);
+    imBordas = deteccaoBordasDilatacao(pre,20); % parametro tamanho do elemento estruturante
     
-    imLimiarizada = limiar(imSegmentada,90,255);
+    imLimiarAutomatico = limiarAutomatico(imBordas);
     
-    imPreenchida = preencherEspacos(imLimiarizada);
+%     figure, imshow(imLimiarAutomatico);
+    
+    imAberta = abertura(imLimiarAutomatico,5);
+    
+%     figure, imshow(imAberta);
 
-    [quantidade,imLabel] = contarComponentesConectadas(imPreenchida);
+    imDilatada = dilatacao(imAberta,5);
+    
+%     figure, imshow(imDilatada);
+    
+    imPreenchida = preencherEspacos(imDilatada,8); % parametro tamanho do elemento estruturante
+
+%     figure, imshow(imPreenchida);
+    
+    [total,~] = contarComponentesConectadas(imPreenchida);
+    
+    disp(['Total de grãos = ' num2str(total)]);
+    
+    imComMascara = aplicarMascara(red_band,imPreenchida);
+    
+%     figure, imshow(imComMascara);
+
+    qtClasses = 3
+    
+    tamanhoDoIncrementoDeIntensidade = uint8(253/qtClasses);
+    
+    disp(['Tamanho do incremento =' num2str(tamanhoDoIncrementoDeIntensidade)]);
+    
+    limiteInferior = 0;
+    
+    limiteSuperior = tamanhoDoIncrementoDeIntensidade;
+    
+    for i = 1:qtClasses-1
+       
+       imClasse = limiar(imComMascara,limiteInferior,limiteSuperior);
+       
+%        figure, imshow(imClasse);
+       
+       imErodida = erosao(imClasse,2);
+       
+%        figure, imshow(imErodida);
+
+       imPreenchida = preencherEspacos(imErodida,8); % parametro tamanho do elemento estruturante
+
+%        figure, imshow(imPreenchida);
+       
+       imAberta = abertura(imPreenchida,20);
+    
+%        figure, imshow(imAberta);
+       
+       limiteInferior = limiteInferior+tamanhoDoIncrementoDeIntensidade;
+       
+       limiteSuperior = limiteSuperior+tamanhoDoIncrementoDeIntensidade;
+       
+       [quantidade,imLabel] = contarComponentesConectadas(imAberta);
+    
+%     figure, imshow(imLabel);
+
+       disp(['A classe ' num2str(i) ' tem ' num2str(quantidade) ' grãos']);
+       
+       imAberta = ~imAberta;
+       
+       imComMascara = aplicarMascara(imComMascara,imAberta);
+       
+       total = total-quantidade;
+       
+%        figure, imshow(imComMascara);
+    end
+    
+    disp(['A classe ' num2str(qtClasses) ' tem ' num2str(total) ' graos']);
     
     set(handles.contador_label, 'String', strcat('Elementos encontrados:  ', num2str(quantidade))); %Altera o contador de elementos encontrados
     set(handles.axes2, 'visible', 'on'); %Coloca o axes2 como visivel
     axes(handles.axes2);
-    imshow(imLabel);
+    imshow(imComMascara);
 
 
 % --- Executes on selection change in proportion_popup_menu.
