@@ -18,7 +18,7 @@ function contarGraos(qtClasses)
 
 %         figure, imshow(imSemRuido);
 
-    %     imEqualizada = equalizarHistograma(imSemRuido);
+    %     imEqualizada = histeq(imSemRuido);
 
     %     figure, imshow(imEqualizada);
 

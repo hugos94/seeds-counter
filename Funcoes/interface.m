@@ -119,21 +119,14 @@ function median_filter_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.red_band = handles.image(:,:,1);
-handles.result = filtroMediana(handles.red_band);
-set(handles.axes2, 'visible', 'on');
-axes(handles.axes2);
-imshow(handles.result);
-guidata(hObject,handles)
+handles.red_band = handles.image(:,:,1); %Captura a banda R da imagem original
 
+hsv = rgb2hsv(handles.image); %Converte a imagem original para HSV
+        
+handles.s_component = hsv(:,:,2); %Captura a component S da imagem original
 
-% --- Executes on button press in histogram_equalizer_button.
-function histogram_equalizer_button_Callback(hObject, eventdata, handles)
-% hObject    handle to histogram_equalizer_button (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+handles.result = filtroMediana(handles.s_component); %Aplica o filtro da mediana na componente S
 
-handles.result = equalizarHistograma(handles.result);
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
@@ -146,7 +139,8 @@ function edge_detection_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.result = deteccaoBordasDilatacao(handles.result,20);
+handles.result = deteccaoBordasDilatacao(handles.result,20); % parametro tamanho do elemento estruturante
+
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
