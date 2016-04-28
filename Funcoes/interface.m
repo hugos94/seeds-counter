@@ -87,6 +87,7 @@ function open_file_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 [filename,canceled] = imgetfile;
 if ~canceled
+     handles.proportion = '1';
      set(handles.axes1, 'visible', 'on');
      handles.arquivo = filename;
      handles.image = imread(filename);
@@ -94,10 +95,6 @@ if ~canceled
      [x,y,~] = size(handles.image);
      set(handles.image_size_label, 'String', strcat('Tamanho da imagem: ', num2str(x), 'x', num2str(y))); %Altera o contador de elementos encontrados
      imshow(handles.image);
-     handles.proportion = 0.1;
-     %set(handles.axes2, 'visible', 'off'); %Coloca o axes2 como visivel
-     %axes(handles.axes2);
-     %imshow();
 end
 handles.px2min = NaN;
 guidata(hObject,handles)
@@ -328,6 +325,7 @@ str = get(hObject, 'String');
 val = get(hObject,'Value');
 
 handles.proportion = str{val};
+
 % Save the handles structure.
 guidata(hObject,handles)
 
