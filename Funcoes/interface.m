@@ -154,6 +154,7 @@ function thresholding_button_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 handles.result = limiarAutomatico(handles.result);
+
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
@@ -167,6 +168,7 @@ function apperture_button_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 handles.result = abertura(handles.result,5);
+
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
@@ -179,7 +181,8 @@ function dilatation_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.result = dilatacao(handles.result,5);
+handles.result = dilatacao(handles.result,25);
+
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
