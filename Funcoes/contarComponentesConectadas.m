@@ -1,6 +1,6 @@
 function [quantidade,imSaida] = contarComponentesConectadas(imEntrada)
 
-    [~, numeroDeRotulos] = bwlabel(imEntrada);
+    [imRotulada, numeroDeRotulos] = bwlabel(imEntrada);
     
     componentesConectadas = bwconncomp(imEntrada);
     
@@ -8,4 +8,6 @@ function [quantidade,imSaida] = contarComponentesConectadas(imEntrada)
     imSaida = label2rgb(labeled, @copper, 'c', 'shuffle');
     
     quantidade = numeroDeRotulos;
+    
+    imSaida = imRotulada;
 end
