@@ -22,6 +22,17 @@ function mostrarBandasDeCores(im)
     figure, imshow(YCbCr(:,:,2));title('Cb');
     figure, imshow(YCbCr(:,:,3));title('Cr');
     
+    Lab = RGB2Lab(im);
     
-    % YIQ, L*a*b, NTSC, XYZ, YCbCr
+    figure, imshow(Lab(:,:,1));title('L');
+    figure, imshow(Lab(:,:,2));title('a');
+    figure, imshow(Lab(:,:,3));title('b');
+    
+    luv = rgb2LUV(im);
+    
+    figure, imshow(luv(:,:,1));title('l');
+    figure, imshow(luv(:,:,2));title('u');
+    figure, imshow(luv(:,:,3));title('v');
+    
+    % YIQ, L*a*b, NTSC, XYZ, YCbCr, Luv
 end

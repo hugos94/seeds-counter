@@ -53,8 +53,6 @@ function contarGraos(qtClasses)
 
         propriedadeCentroide = regionprops(imRotulada,'centroid');
         
-        imTeste = zeros(size(R));
-        
 %         R = filtroMediana(R);
         
         tamanhoDoIncrementoDeIntensidade = uint8((252/qtClasses));
@@ -74,16 +72,20 @@ function contarGraos(qtClasses)
             
         end
         
-        imTeste = zeros(size(R));
+        imTeste = uint8(zeros(size(R)));
         
         for cont = 1:total
             
             cont
             
+%             imGrao = uint8(zeros(size(R)));
+            
             xCentroide = uint16(propriedadeCentroide(cont).Centroid(2));
             yCentroide = uint16(propriedadeCentroide(cont).Centroid(1));
             
-            janela = R(xCentroide-5:xCentroide+5,yCentroide-5:yCentroide+5);
+            janela = R(xCentroide-5:xCentroide+5,yCentroide-5:yCentroide+5)
+            
+            janela = filtroMediana(janela);
             
             binarioClasse1 = limiar(janela,limiarInferior(1,1),limiarSuperior(1,1));
             binarioClasse2 = limiar(janela,limiarInferior(2,1),limiarSuperior(2,1));
@@ -91,19 +93,20 @@ function contarGraos(qtClasses)
             
             qtPixelsNaClasse(1,1) = sum(binarioClasse1(:));
             qtPixelsNaClasse(2,1) = sum(binarioClasse2(:));
-            qtPixelsNaClasse(3,1) = sum(binarioClasse3(:))
+            qtPixelsNaClasse(3,1) = sum(binarioClasse3(:));
             
             maximoAux = max(qtPixelsNaClasse(1,1),qtPixelsNaClasse(2,1));
             maximo = max(qtPixelsNaClasse(3,1),maximoAux);
             
             indice = find(qtPixelsNaClasse == maximo);
             
-            classes(indice,1) = classes(indice,1)+1
+            classes(indice,1) = classes(indice,1)+1;
             
-            imTeste(xCentroide-5:xCentroide+5,yCentroide-5:yCentroide+5) = uint8(indice*(255/3));
+            imTeste(xCentroide-100:xCentroide+100,yCentroide-100:yCentroide+100) = uint8(indice*(255/3));
             
-            figure,imshow(imTeste),title(['Grao ' num2str(cont)]);
+%             imGrao(xCentroide-100:xCentroide+100,yCentroide-100:yCentroide+100) = uint8(indice*(255/3));
             
+%             figure,imshow(imGrao),title(['Grao ' num2str(cont)]);
             
             
             
@@ -118,6 +121,8 @@ function contarGraos(qtClasses)
 %             end
             
         end
+        
+        figure,imshow(imTeste),title('Final');
         
 %         figure,imshow(imTeste),title('Teste');
         
