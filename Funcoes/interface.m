@@ -22,7 +22,7 @@ function varargout = interface(varargin)
 
 % Edit the above text to modify the response to help interface
 
-% Last Modified by GUIDE v2.5 26-Apr-2016 23:15:41
+% Last Modified by GUIDE v2.5 05-May-2016 00:40:52
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -85,6 +85,7 @@ function open_file_Callback(hObject, eventdata, handles)
 % hObject    handle to open_file (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
 [filename,canceled] = imgetfile;
 if ~canceled
      handles.proportion = '1';
@@ -96,6 +97,18 @@ if ~canceled
      set(handles.image_size_label, 'String', strcat('Tamanho da imagem: ', num2str(x), 'x', num2str(y))); %Altera o contador de elementos encontrados
      imshow(handles.image);
 end
+
+handles.qtClasses = 3;
+handles.classes = zeros(handles.qtClasses,1);
+handles.limiarInferior = zeros(handles.qtClasses,1);
+handles.limiarSuperior = zeros(handles.qtClasses,1);
+handles.qtPixelsNaClasse = zeros(handles.qtClasses,1);
+handles.tamanhoDaJanela = 20;
+handles.tamanhoDoElementoEstruturanteDeteccaoDeBordas = 1;
+handles.tamanhoDoElementoEstruturanteDilatacao = 1;
+handles.tamanhoDoElementoEstruturanteErosao = 14;
+handles.tamanhoQuadrado = 20;
+
 handles.px2min = NaN;
 guidata(hObject,handles)
 
@@ -139,7 +152,7 @@ function edge_detection_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.result = deteccaoBordasDilatacao(handles.result,20); % parametro tamanho do elemento estruturante
+handles.result = deteccaoBordasDilatacao(handles.result,handles.tamanhoDoElementoEstruturanteDeteccaoDeBordas); % parametro tamanho do elemento estruturante
 
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
@@ -161,27 +174,13 @@ imshow(handles.result);
 guidata(hObject,handles)
 
 
-% --- Executes on button press in apperture_button.
-function apperture_button_Callback(hObject, eventdata, handles)
-% hObject    handle to apperture_button (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-handles.result = abertura(handles.result,5);
-
-set(handles.axes2, 'visible', 'on');
-axes(handles.axes2);
-imshow(handles.result);
-guidata(hObject,handles)
-
-
-% --- Executes on button press in dilatation_button.
+% --- Executes on button press in erosion_button.
 function dilatation_button_Callback(hObject, eventdata, handles)
-% hObject    handle to dilatation_button (see GCBO)
+% hObject    handle to erosion_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.result = dilatacao(handles.result,25);
+handles.result = dilatacao(handles.result,handles.tamanhoDoElementoEstruturanteDilatacao);
 
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
@@ -196,6 +195,21 @@ function fill_spaces_button_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 handles.result = preencherEspacos(handles.result,8);
+
+set(handles.axes2, 'visible', 'on');
+axes(handles.axes2);
+imshow(handles.result);
+guidata(hObject,handles)
+
+
+% --- Executes on button press in erosion_button.
+function erosion_button_Callback(hObject, eventdata, handles)
+% hObject    handle to erosion_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+handles.result = erosao(handles.result,handles.tamanhoDoElementoEstruturanteErosao);
+
 set(handles.axes2, 'visible', 'on');
 axes(handles.axes2);
 imshow(handles.result);
@@ -208,9 +222,55 @@ function elements_counter_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-[quantidade,~] = contarComponentesConectadas(handles.result);
+[quantidade,handles.imRotulada] = contarComponentesConectadas(handles.result);
 
-handles.result = aplicarMascara(handles.red_band,imPreenchida);
+propriedadeCentroide = regionprops(handles.imRotulada,'centroid');
+
+handles.tamanhoDoIncrementoDeIntensidade = uint8((252/handles.qtClasses));
+
+handles.limiarInferior(1,1) = 1;
+
+handles.limiarSuperior(1,1) = tamanhoDoIncrementoDeIntensidade+1;
+
+for cont = 2:handles.qtClasses
+
+        handles.limiarInferior(cont,1) = handles.limiarInferior(cont-1,1)+handles.tamanhoDoIncrementoDeIntensidade+1;
+
+        handles.limiarSuperior(cont,1) = handles.limiarSuperior(cont-1,1)+handles.tamanhoDoIncrementoDeIntensidade+1;
+
+end
+
+handles.imSaidaQuadrados = uint8(zeros(size(R)));
+
+for cont = 1:total
+
+    xCentroide = uint16(propriedadeCentroide(cont).Centroid(2));
+    yCentroide = uint16(propriedadeCentroide(cont).Centroid(1));
+
+    janela = handles.red_band(xCentroide-handles.tamanhoDaJanela:xCentroide+handles.tamanhoDaJanela,yCentroide-handles.tamanhoDaJanela:yCentroide+handles.tamanhoDaJanela);
+
+    janela = filtroMediana(janela);
+
+    binarioClasse1 = limiar(janela,handles.limiarInferior(1,1),handles.limiarSuperior(1,1));
+    binarioClasse2 = limiar(janela,handles.limiarInferior(2,1),handles.limiarSuperior(2,1));
+    binarioClasse3 = limiar(janela,handles.limiarInferior(3,1),handles.limiarSuperior(3,1));
+
+    qtPixelsNaClasse(1,1) = sum(binarioClasse1(:));
+    qtPixelsNaClasse(2,1) = sum(binarioClasse2(:));
+    qtPixelsNaClasse(3,1) = sum(binarioClasse3(:));
+
+    maximoAux = max(qtPixelsNaClasse(1,1),qtPixelsNaClasse(2,1));
+    maximo = max(qtPixelsNaClasse(3,1),maximoAux);
+
+    indice = find(qtPixelsNaClasse == maximo);
+
+    handles.classes(indice,1) = handles.classes(indice,1)+1;
+
+    imSaidaQuadrados(xCentroide-handles.tamanhoQuadrado:xCentroide+handles.tamanhoQuadrado,yCentroide-handles.tamanhoQuadrado:yCentroide+handles.tamanhoQuadrado) = uint8(indice*(255/3));
+
+    imSaidaQuadrados = desenharBordaDoQuadrado(imSaidaQuadrados,xCentroide-handles.tamanhoQuadrado,xCentroide+handles.tamanhoQuadrado,yCentroide-handles.tamanhoQuadrado,yCentroide+handles.tamanhoQuadrado);
+
+end
 
 set(handles.contador_label, 'String', strcat('Elementos encontrados:  ', num2str(quantidade))); %Altera o contador de elementos encontrados
 set(handles.axes2, 'visible', 'on'); %Coloca o axes2 como visivel
@@ -223,87 +283,116 @@ function execute_complete_button_Callback(hObject, eventdata, handles)
 % hObject    handle to execute_complete_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+    qtClasses = 3
+    classes = zeros(qtClasses,1);
+    limiarInferior = zeros(qtClasses,1);
+    limiarSuperior = zeros(qtClasses,1);
+    qtPixelsNaClasse = zeros(qtClasses,1);
+    tamanhoDaJanela = 3;
+    tamanhoDoElementoEstruturanteDeteccaoDeBordas = 10;
+    tamanhoDoElementoEstruturanteDilatacao = 18;
+    tamanhoDoElementoEstruturanteErosao = 70;
+    tamanhoQuadrado = 90;
+    
+    hsv = rgb2hsv(handles.image);
 
-    red_band = handles.image(:,:,1); %Captura apenas a banda vermelha
+    s = hsv(:,:,2);
+
+%     figure,imshow(s),title('Imagem de entrada S');
+
+    R = handles.image(:,:,1);
+
+    figure,imshow(R),title('Imagem de entrada R');
+
+    imSemRuido = filtroMediana(s);
+
+%     figure, imshow(imSemRuido),title('Imagem sem ruidos');
+        
+    imBordas = deteccaoBordasDilatacao(imSemRuido,tamanhoDoElementoEstruturanteDeteccaoDeBordas); % parametro tamanho do elemento estruturante
     
-    pre = preprocessamento(red_band);
-    
-    imBordas = deteccaoBordasDilatacao(pre,20); % parametro tamanho do elemento estruturante
-    
+%     figure, imshow(imBordas),title(['Bordas']);
+
     imLimiarAutomatico = limiarAutomatico(imBordas);
-    
-%     figure, imshow(imLimiarAutomatico);
-    
-    imAberta = abertura(imLimiarAutomatico,5);
-    
-%     figure, imshow(imAberta);
 
-    imDilatada = dilatacao(imAberta,5);
-    
-%     figure, imshow(imDilatada);
-    
+    figure, imshow(imLimiarAutomatico),title(['Limiar = ' num2str(tamanhoDoElementoEstruturanteDeteccaoDeBordas)]);
+        
+    imDilatada = dilatacao(imLimiarAutomatico,tamanhoDoElementoEstruturanteDilatacao);
+
+%     figure, imshow(imDilatada),title('Dilatacao');
+
     imPreenchida = preencherEspacos(imDilatada,8); % parametro tamanho do elemento estruturante
 
-%     figure, imshow(imPreenchida);
+   % figure, imshow(imPreenchida),title(['Preencher buracos, dilatacao = ' num2str(tamanhoDoElementoEstruturanteDilatacao)]);
     
-    [total,~] = contarComponentesConectadas(imPreenchida);
-    
-    disp(['Total de grãos = ' num2str(total)]);
-    
-    imComMascara = aplicarMascara(red_band,imPreenchida);
-    
-%     figure, imshow(imComMascara);
+    imErodida = erosao(imPreenchida,tamanhoDoElementoEstruturanteErosao);
 
-    qtClasses = 3
-    
-    tamanhoDoIncrementoDeIntensidade = uint8(253/qtClasses);
-    
+    %figure, imshow(imErodida),title(['Erosao = ' num2str(tamanhoDoElementoEstruturanteErosao)]);
+
+    [total,imRotulada] = contarComponentesConectadas(imErodida);
+
+    propriedadeCentroide = regionprops(imRotulada,'centroid');
+
+%         R = filtroMediana(R);
+
+    tamanhoDoIncrementoDeIntensidade = uint8((252/qtClasses));
+
     disp(['Tamanho do incremento =' num2str(tamanhoDoIncrementoDeIntensidade)]);
-    
-    limiteInferior = 0;
-    
-    limiteSuperior = tamanhoDoIncrementoDeIntensidade;
-    
-    for i = 1:qtClasses-1
-       
-       imClasse = limiar(imComMascara,limiteInferior,limiteSuperior);
-       
-%        figure, imshow(imClasse);
-       
-       imErodida = erosao(imClasse,2);
-       
-%        figure, imshow(imErodida);
 
-       imPreenchida = preencherEspacos(imErodida,8); % parametro tamanho do elemento estruturante
 
-%        figure, imshow(imPreenchida);
-       
-       imAberta = abertura(imPreenchida,20);
-    
-%        figure, imshow(imAberta);
-       
-       limiteInferior = limiteInferior+tamanhoDoIncrementoDeIntensidade;
-       
-       limiteSuperior = limiteSuperior+tamanhoDoIncrementoDeIntensidade;
-       
-       [quantidade,imLabel] = contarComponentesConectadas(imAberta);
-    
-%     figure, imshow(imLabel);
+    limiarInferior(1,1) = 1;
 
-       disp(['A classe ' num2str(i) ' tem ' num2str(quantidade) ' grãos']);
-       
-       imAberta = ~imAberta;
-       
-       imComMascara = aplicarMascara(imComMascara,imAberta);
-       
-       total = total-quantidade;
-       
-%        figure, imshow(imComMascara);
+    limiarSuperior(1,1) = tamanhoDoIncrementoDeIntensidade+1;
+
+    for cont = 2:qtClasses
+
+        limiarInferior(cont,1) = limiarInferior(cont-1,1)+tamanhoDoIncrementoDeIntensidade+1;
+
+        limiarSuperior(cont,1) = limiarSuperior(cont-1,1)+tamanhoDoIncrementoDeIntensidade+1;
+
+    end
+
+    imSaidaQuadrados = uint8(zeros(size(R)));
+
+    for cont = 1:total
+
+        xCentroide = uint16(propriedadeCentroide(cont).Centroid(2));
+        yCentroide = uint16(propriedadeCentroide(cont).Centroid(1));
+
+        janela = R(xCentroide-tamanhoDaJanela:xCentroide+tamanhoDaJanela,yCentroide-tamanhoDaJanela:yCentroide+tamanhoDaJanela);
+
+        janela = filtroMediana(janela);
+
+        binarioClasse1 = limiar(janela,limiarInferior(1,1),limiarSuperior(1,1));
+        binarioClasse2 = limiar(janela,limiarInferior(2,1),limiarSuperior(2,1));
+        binarioClasse3 = limiar(janela,limiarInferior(3,1),limiarSuperior(3,1));
+
+        qtPixelsNaClasse(1,1) = sum(binarioClasse1(:));
+        qtPixelsNaClasse(2,1) = sum(binarioClasse2(:));
+        qtPixelsNaClasse(3,1) = sum(binarioClasse3(:));
+
+        maximoAux = max(qtPixelsNaClasse(1,1),qtPixelsNaClasse(2,1));
+        maximo = max(qtPixelsNaClasse(3,1),maximoAux);
+
+        indice = find(qtPixelsNaClasse == maximo);
+
+        classes(indice,1) = classes(indice,1)+1;
+        
+        imSaidaQuadrados(xCentroide-tamanhoQuadrado:xCentroide+tamanhoQuadrado,yCentroide-tamanhoQuadrado:yCentroide+tamanhoQuadrado) = uint8(indice*(255/3));
+        
+        imSaidaQuadrados = desenharBordaDoQuadrado(imSaidaQuadrados,xCentroide-tamanhoQuadrado,xCentroide+tamanhoQuadrado,yCentroide-tamanhoQuadrado,yCentroide+tamanhoQuadrado);
+
     end
     
-    disp(['A classe ' num2str(qtClasses) ' tem ' num2str(total) ' graos']);
+    disp(['Total de grãos = ' num2str(total)]);
+        
+    for cont = 1:qtClasses
+
+        disp(['quantidade de graos na classe ' num2str(cont) ' = ' num2str(classes(cont,1))]);
+
+    end
     
-    set(handles.contador_label, 'String', strcat('Elementos encontrados:  ', num2str(quantidade))); %Altera o contador de elementos encontrados
+    figure,imshow(imSaidaQuadrados),title(['Classes']);    
+    set(handles.contador_label, 'String', strcat('Elementos encontrados:  ', num2str(total))); %Altera o contador de elementos encontrados
     set(handles.axes2, 'visible', 'on'); %Coloca o axes2 como visivel
     axes(handles.axes2);
     imshow(imComMascara);
