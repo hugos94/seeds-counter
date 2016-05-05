@@ -22,7 +22,7 @@ function varargout = interface(varargin)
 
 % Edit the above text to modify the response to help interface
 
-% Last Modified by GUIDE v2.5 05-May-2016 00:40:52
+% Last Modified by GUIDE v2.5 05-May-2016 09:48:29
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -86,6 +86,13 @@ function open_file_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+set(handles.contador_label, 'String', strcat('Elementos encontrados: ', num2str(0))); %Altera o contador de elementos encontrados
+set(handles.table_text, 'String', ''); %Altera o contador de elementos encontrados
+
+cla(handles.axes1);
+cla(handles.axes2);
+
+
 [filename,canceled] = imgetfile;
 if ~canceled
      handles.proportion = '1';
@@ -103,11 +110,14 @@ handles.classes = zeros(handles.qtClasses,1);
 handles.limiarInferior = zeros(handles.qtClasses,1);
 handles.limiarSuperior = zeros(handles.qtClasses,1);
 handles.qtPixelsNaClasse = zeros(handles.qtClasses,1);
-handles.tamanhoDaJanela = 20;
-handles.tamanhoDoElementoEstruturanteDeteccaoDeBordas = 1;
-handles.tamanhoDoElementoEstruturanteDilatacao = 1;
-handles.tamanhoDoElementoEstruturanteErosao = 14;
-handles.tamanhoQuadrado = 20;
+
+
+handles.tamanhoDaJanela = 3;
+handles.tamanhoDoElementoEstruturanteDeteccaoDeBordas = 10;
+handles.tamanhoDoElementoEstruturanteDilatacao = 18;
+handles.tamanhoDoElementoEstruturanteErosao = 70;
+handles.tamanhoQuadrado = 90;
+
 
 handles.px2min = NaN;
 guidata(hObject,handles)
@@ -222,7 +232,7 @@ function elements_counter_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-[quantidade,handles.imRotulada] = contarComponentesConectadas(handles.result);
+[handles.total,handles.imRotulada] = contarComponentesConectadas(handles.result);
 
 propriedadeCentroide = regionprops(handles.imRotulada,'centroid');
 
@@ -230,7 +240,7 @@ handles.tamanhoDoIncrementoDeIntensidade = uint8((252/handles.qtClasses));
 
 handles.limiarInferior(1,1) = 1;
 
-handles.limiarSuperior(1,1) = tamanhoDoIncrementoDeIntensidade+1;
+handles.limiarSuperior(1,1) = handles.tamanhoDoIncrementoDeIntensidade+1;
 
 for cont = 2:handles.qtClasses
 
@@ -240,9 +250,9 @@ for cont = 2:handles.qtClasses
 
 end
 
-handles.imSaidaQuadrados = uint8(zeros(size(R)));
+handles.imSaidaQuadrados = uint8(zeros(size(handles.red_band)));
 
-for cont = 1:total
+for cont = 1:handles.total
 
     xCentroide = uint16(propriedadeCentroide(cont).Centroid(2));
     yCentroide = uint16(propriedadeCentroide(cont).Centroid(1));
@@ -272,11 +282,21 @@ for cont = 1:total
 
 end
 
-set(handles.contador_label, 'String', strcat('Elementos encontrados:  ', num2str(quantidade))); %Altera o contador de elementos encontrados
+handles.quantidadesEncontradas = ''
+    
+for cont = 1:handles.qtClasses
+    handles.quantidadesEncontradas = strcat(handles.quantidadesEncontradas, 'Classe ',num2str(cont), ' =  ', num2str(handles.classes(cont,1)),  ' grãos.');
+end
+
+set(handles.contador_label, 'String', strcat('Elementos encontrados: ', num2str(handles.total))); %Altera o contador de elementos encontrados
+set(handles.table_text, 'String', handles.quantidadesEncontradas); %Altera o contador de elementos encontrados
+
 set(handles.axes2, 'visible', 'on'); %Coloca o axes2 como visivel
 axes(handles.axes2);
-imshow(handles.result);
-guidata(hObject,handles)
+imshow(imSaidaQuadrados);
+
+figure, imshow(handles.red_band),title('BANDA R');
+
 
 % --- Executes on button press in execute_complete_button.
 function execute_complete_button_Callback(hObject, eventdata, handles)
@@ -288,67 +308,39 @@ function execute_complete_button_Callback(hObject, eventdata, handles)
     limiarInferior = zeros(qtClasses,1);
     limiarSuperior = zeros(qtClasses,1);
     qtPixelsNaClasse = zeros(qtClasses,1);
-    tamanhoDaJanela = 3;
-    tamanhoDoElementoEstruturanteDeteccaoDeBordas = 10;
-    tamanhoDoElementoEstruturanteDilatacao = 18;
-    tamanhoDoElementoEstruturanteErosao = 70;
-    tamanhoQuadrado = 90;
     
     hsv = rgb2hsv(handles.image);
 
     s = hsv(:,:,2);
 
-%     figure,imshow(s),title('Imagem de entrada S');
-
     R = handles.image(:,:,1);
 
-    figure,imshow(R),title('Imagem de entrada R');
-
     imSemRuido = filtroMediana(s);
-
-%     figure, imshow(imSemRuido),title('Imagem sem ruidos');
         
-    imBordas = deteccaoBordasDilatacao(imSemRuido,tamanhoDoElementoEstruturanteDeteccaoDeBordas); % parametro tamanho do elemento estruturante
-    
-%     figure, imshow(imBordas),title(['Bordas']);
+    imBordas = deteccaoBordasDilatacao(imSemRuido,handles.tamanhoDoElementoEstruturanteDeteccaoDeBordas); % parametro tamanho do elemento estruturante
 
     imLimiarAutomatico = limiarAutomatico(imBordas);
-
-    figure, imshow(imLimiarAutomatico),title(['Limiar = ' num2str(tamanhoDoElementoEstruturanteDeteccaoDeBordas)]);
         
-    imDilatada = dilatacao(imLimiarAutomatico,tamanhoDoElementoEstruturanteDilatacao);
-
-%     figure, imshow(imDilatada),title('Dilatacao');
+    imDilatada = dilatacao(imLimiarAutomatico,handles.tamanhoDoElementoEstruturanteDilatacao);
 
     imPreenchida = preencherEspacos(imDilatada,8); % parametro tamanho do elemento estruturante
-
-   % figure, imshow(imPreenchida),title(['Preencher buracos, dilatacao = ' num2str(tamanhoDoElementoEstruturanteDilatacao)]);
     
-    imErodida = erosao(imPreenchida,tamanhoDoElementoEstruturanteErosao);
-
-    %figure, imshow(imErodida),title(['Erosao = ' num2str(tamanhoDoElementoEstruturanteErosao)]);
+    imErodida = erosao(imPreenchida,handles.tamanhoDoElementoEstruturanteErosao);
 
     [total,imRotulada] = contarComponentesConectadas(imErodida);
 
     propriedadeCentroide = regionprops(imRotulada,'centroid');
 
-%         R = filtroMediana(R);
-
     tamanhoDoIncrementoDeIntensidade = uint8((252/qtClasses));
-
-    disp(['Tamanho do incremento =' num2str(tamanhoDoIncrementoDeIntensidade)]);
-
 
     limiarInferior(1,1) = 1;
 
     limiarSuperior(1,1) = tamanhoDoIncrementoDeIntensidade+1;
 
     for cont = 2:qtClasses
-
         limiarInferior(cont,1) = limiarInferior(cont-1,1)+tamanhoDoIncrementoDeIntensidade+1;
 
         limiarSuperior(cont,1) = limiarSuperior(cont-1,1)+tamanhoDoIncrementoDeIntensidade+1;
-
     end
 
     imSaidaQuadrados = uint8(zeros(size(R)));
@@ -358,7 +350,7 @@ function execute_complete_button_Callback(hObject, eventdata, handles)
         xCentroide = uint16(propriedadeCentroide(cont).Centroid(2));
         yCentroide = uint16(propriedadeCentroide(cont).Centroid(1));
 
-        janela = R(xCentroide-tamanhoDaJanela:xCentroide+tamanhoDaJanela,yCentroide-tamanhoDaJanela:yCentroide+tamanhoDaJanela);
+        janela = R(xCentroide-handles.tamanhoDaJanela:xCentroide+handles.tamanhoDaJanela,yCentroide-handles.tamanhoDaJanela:yCentroide+handles.tamanhoDaJanela);
 
         janela = filtroMediana(janela);
 
@@ -377,25 +369,26 @@ function execute_complete_button_Callback(hObject, eventdata, handles)
 
         classes(indice,1) = classes(indice,1)+1;
         
-        imSaidaQuadrados(xCentroide-tamanhoQuadrado:xCentroide+tamanhoQuadrado,yCentroide-tamanhoQuadrado:yCentroide+tamanhoQuadrado) = uint8(indice*(255/3));
+        imSaidaQuadrados(xCentroide-handles.tamanhoQuadrado:xCentroide+handles.tamanhoQuadrado,yCentroide-handles.tamanhoQuadrado:yCentroide+handles.tamanhoQuadrado) = uint8(indice*(255/3));
         
-        imSaidaQuadrados = desenharBordaDoQuadrado(imSaidaQuadrados,xCentroide-tamanhoQuadrado,xCentroide+tamanhoQuadrado,yCentroide-tamanhoQuadrado,yCentroide+tamanhoQuadrado);
+        imSaidaQuadrados = desenharBordaDoQuadrado(imSaidaQuadrados,xCentroide-handles.tamanhoQuadrado,xCentroide+handles.tamanhoQuadrado,yCentroide-handles.tamanhoQuadrado,yCentroide+handles.tamanhoQuadrado);
 
     end
     
-    disp(['Total de grãos = ' num2str(total)]);
-        
+    handles.quantidadesEncontradas = ''
+    
     for cont = 1:qtClasses
-
-        disp(['quantidade de graos na classe ' num2str(cont) ' = ' num2str(classes(cont,1))]);
-
+        handles.quantidadesEncontradas = [handles.quantidadesEncontradas 'Classe ' num2str(cont) ' =  ' num2str(classes(cont,1))  ' grãos.';];
     end
-    
-    figure,imshow(imSaidaQuadrados),title(['Classes']);    
-    set(handles.contador_label, 'String', strcat('Elementos encontrados:  ', num2str(total))); %Altera o contador de elementos encontrados
+            
+    set(handles.contador_label, 'String', strcat('Elementos encontrados: ', num2str(total))); %Altera o contador de elementos encontrados
+    set(handles.table_text, 'String', handles.quantidadesEncontradas); %Altera o contador de elementos encontrados
+
     set(handles.axes2, 'visible', 'on'); %Coloca o axes2 como visivel
     axes(handles.axes2);
-    imshow(imComMascara);
+    imshow(imSaidaQuadrados);
+    
+    figure, imshow(R),title('BANDA R');
 
 
 % --- Executes on selection change in proportion_popup_menu.
@@ -442,3 +435,137 @@ axes(handles.axes1);
 set(handles.image_size_label, 'String', strcat('Tamanho da imagem: ', num2str(x), 'x', num2str(y))); %Altera o contador de elementos encontrados
 imshow(handles.image);
 guidata(hObject,handles)
+
+
+
+function tamanho_janela_input_Callback(hObject, eventdata, handles)
+% hObject    handle to tamanho_janela_input (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tamanho_janela_input as text
+%        str2double(get(hObject,'String')) returns contents of tamanho_janela_input as a double
+
+handles.tamanhoDaJanela = str2num(get(hObject,'String'));
+guidata(hObject,handles)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function tamanho_janela_input_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tamanho_janela_input (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function tamanho_quadrado_input_Callback(hObject, eventdata, handles)
+% hObject    handle to tamanho_quadrado_input (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tamanho_quadrado_input as text
+%        str2double(get(hObject,'String')) returns contents of tamanho_quadrado_input as a double
+
+handles.tamanhoQuadrado = str2num(get(hObject,'String'));
+guidata(hObject,handles)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function tamanho_quadrado_input_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tamanho_quadrado_input (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+function tamanho_deteccao_bordas_input_Callback(hObject, eventdata, handles)
+% hObject    handle to tamanho_deteccao_bordas_input (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tamanho_deteccao_bordas_input as text
+%        str2double(get(hObject,'String')) returns contents of tamanho_deteccao_bordas_input as a double
+
+handles.tamanhoDoElementoEstruturanteDeteccaoDeBordas = str2num(get(hObject,'String'));
+guidata(hObject,handles)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function tamanho_deteccao_bordas_input_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tamanho_deteccao_bordas_input (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function tamanho_dilatacao_input_Callback(hObject, eventdata, handles)
+% hObject    handle to tamanho_dilatacao_input (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tamanho_dilatacao_input as text
+%        str2double(get(hObject,'String')) returns contents of tamanho_dilatacao_input as a double
+
+handles.tamanhoDoElementoEstruturanteDilatacao = str2num(get(hObject,'String'));
+guidata(hObject,handles)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function tamanho_dilatacao_input_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tamanho_dilatacao_input (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function tamanho_erosao_input_Callback(hObject, eventdata, handles)
+% hObject    handle to tamanho_erosao_input (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tamanho_erosao_input as text
+%        str2double(get(hObject,'String')) returns contents of tamanho_erosao_input as a double
+
+handles.tamanhoDoElementoEstruturanteErosao = str2num(get(hObject,'String'));
+guidata(hObject,handles)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function tamanho_erosao_input_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tamanho_erosao_input (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
