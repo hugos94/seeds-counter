@@ -111,14 +111,6 @@ handles.limiarInferior = zeros(handles.qtClasses,1);
 handles.limiarSuperior = zeros(handles.qtClasses,1);
 handles.qtPixelsNaClasse = zeros(handles.qtClasses,1);
 
-
-handles.tamanhoDaJanela = 3;
-handles.tamanhoDoElementoEstruturanteDeteccaoDeBordas = 10;
-handles.tamanhoDoElementoEstruturanteDilatacao = 18;
-handles.tamanhoDoElementoEstruturanteErosao = 70;
-handles.tamanhoQuadrado = 90;
-
-
 handles.px2min = NaN;
 guidata(hObject,handles)
 
@@ -285,10 +277,10 @@ end
 handles.quantidadesEncontradas = ''
     
 for cont = 1:handles.qtClasses
-    handles.quantidadesEncontradas = strcat(handles.quantidadesEncontradas, 'Classe ',num2str(cont), ' =  ', num2str(handles.classes(cont,1)),  ' grãos.');
+    handles.quantidadesEncontradas = [handles.quantidadesEncontradas, 'Classe ',num2str(cont), ' = ', num2str(handles.classes(cont,1)),  ' grãos.     ';];
 end
 
-set(handles.contador_label, 'String', strcat('Elementos encontrados: ', num2str(handles.total))); %Altera o contador de elementos encontrados
+set(handles.contador_label, 'String', ['Elementos encontrados: ', num2str(handles.total)]); %Altera o contador de elementos encontrados
 set(handles.table_text, 'String', handles.quantidadesEncontradas); %Altera o contador de elementos encontrados
 
 set(handles.axes2, 'visible', 'on'); %Coloca o axes2 como visivel
