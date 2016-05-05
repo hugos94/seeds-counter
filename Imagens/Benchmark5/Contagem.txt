@@ -1,0 +1,28 @@
+T1
+
+16 feijoes pretos
+13 feijoes marrons
+12 milhos
+
+total = 41
+
+
+
+
+T2
+
+17 feijoes pretos
+17 feijoes marrons
+24 milhos
+
+total = 58
+
+
+
+T3
+
+10 castanhas
+12 
+20 feijoes
+
+total = 42

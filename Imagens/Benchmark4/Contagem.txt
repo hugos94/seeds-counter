@@ -1,0 +1,8 @@
+T9
+
+15 feijoes pretos
+19 feijoes marrons
+14 milhos
+
+
+total = 48
