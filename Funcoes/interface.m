@@ -277,7 +277,7 @@ end
 handles.quantidadesEncontradas = ''
     
 for cont = 1:handles.qtClasses
-    handles.quantidadesEncontradas = [handles.quantidadesEncontradas, 'Classe ',num2str(cont), ' = ', num2str(handles.classes(cont,1)),  ' grãos.     ';];
+    handles.quantidadesEncontradas = [handles.quantidadesEncontradas, 'Classe ',num2str(cont), ' = ', num2str(handles.classes(cont,1)),  '. ';];
 end
 
 set(handles.contador_label, 'String', ['Elementos encontrados: ', num2str(handles.total)]); %Altera o contador de elementos encontrados
@@ -370,10 +370,10 @@ function execute_complete_button_Callback(hObject, eventdata, handles)
     handles.quantidadesEncontradas = ''
     
     for cont = 1:qtClasses
-        handles.quantidadesEncontradas = [handles.quantidadesEncontradas 'Classe ' num2str(cont) ' =  ' num2str(classes(cont,1))  ' grãos.';];
+        handles.quantidadesEncontradas = [handles.quantidadesEncontradas 'Classe ' num2str(cont) ' =  ' num2str(classes(cont,1))  '. ';];
     end
             
-    set(handles.contador_label, 'String', strcat('Elementos encontrados: ', num2str(total))); %Altera o contador de elementos encontrados
+    set(handles.contador_label, 'String', ['Elementos encontrados: ', num2str(total)]); %Altera o contador de elementos encontrados
     set(handles.table_text, 'String', handles.quantidadesEncontradas); %Altera o contador de elementos encontrados
 
     set(handles.axes2, 'visible', 'on'); %Coloca o axes2 como visivel
