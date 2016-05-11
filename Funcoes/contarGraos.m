@@ -43,11 +43,11 @@ function contarGraos(qtClasses)
 
     imPreenchida = preencherEspacos(imDilatada,8); % parametro tamanho do elemento estruturante
 
-    figure, imshow(imPreenchida),title(['Preencher buracos, dilatacao = ' num2str(tamanhoDoElementoEstruturanteDilatacao)]);
+   % figure, imshow(imPreenchida),title(['Preencher buracos, dilatacao = ' num2str(tamanhoDoElementoEstruturanteDilatacao)]);
     
     imErodida = erosao(imPreenchida,tamanhoDoElementoEstruturanteErosao);
 
-    figure, imshow(imErodida),title(['Erosao = ' num2str(tamanhoDoElementoEstruturanteErosao)]);
+    %figure, imshow(imErodida),title(['Erosao = ' num2str(tamanhoDoElementoEstruturanteErosao)]);
 
     [total,imRotulada] = contarComponentesConectadas(imErodida);
 
