@@ -5,21 +5,25 @@ function gerarBaseDeConhecimento
     amendoim();
     
     disp('Base amendoim gerada com sucesso!');
+    
+    azeitona();
+    
+    disp('Base azeitona gerada com sucesso!');
 
     castanha();
     
     disp('Base castanha gerada com sucesso!');
     
-    feijaoMarrom();
+    cereja();
     
-    disp('Base feijao marrom gerada com sucesso!');
+    disp('Base cereja gerada com sucesso!');
     
-    feijaoPreto();
+    ervilha();
     
-    disp('Base feijao preto gerada com sucesso!');
+    disp('Base ervilha gerada com sucesso!');
     
-    milho();
+    morango();
     
-    disp('Base milho gerada com sucesso!');
+    disp('Base morango gerada com sucesso!');
 
 end

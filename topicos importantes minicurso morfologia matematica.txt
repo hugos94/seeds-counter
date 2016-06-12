@@ -1,0 +1,14 @@
+Tópicos interessantes
+
+Afinamento
+Expessamento
+Esqueleto
+Morfologia condicional
+
+Tophat - segmentação, mantém os desníveis na intensidade, detecta o que nao
+	 é importante para posteriormente remover da imagem
+
+Modelo de cores para morfologia matemática - YPbPr
+
+ordenação lexicográfica foi a forma mais atrativa de resolver a morfologia
+matemática para imagens coloridas.
