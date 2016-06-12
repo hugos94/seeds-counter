@@ -3,11 +3,11 @@ function trabalho2()
     clc
     
     tamanhoDoElementoEstruturanteDeteccaoDeBordas = 1;
-    tamanhoDoElementoEstruturanteAbertura = 10;
-    tamanhoDoElementoEstruturanteFechamento = 15;
-    removerElementosDeTamanho = 1000;
+%     tamanhoDoElementoEstruturanteAbertura = 10;
+    tamanhoDoElementoEstruturanteFechamento = 1;
+    removerElementosDeTamanho = 4000;
     
-    imEntrada = imread(['..\Imagens\Segundo Trabalho\GruposDeSementes\Cereja e Azeitona\castanha1.jpg']);
+    imEntrada = imread(['..\Imagens\Segundo Trabalho\SementesNovas\1.jpg']);
     
     CMYK = rgb2cmyk(imEntrada);
 
@@ -21,9 +21,9 @@ function trabalho2()
     
     imSuavizadaS = filtroMediana(s);
     
-    imBordasK = detectarBordasBanda(imSuavizadaK,tamanhoDoElementoEstruturanteDeteccaoDeBordas);
+    imBordasK = detectarBordasBanda(imSuavizadaK,tamanhoDoElementoEstruturanteDeteccaoDeBordas,1,1,1);
     
-    imBordasS = detectarBordasBanda(imSuavizadaS,tamanhoDoElementoEstruturanteDeteccaoDeBordas);
+    imBordasS = detectarBordasBanda(imSuavizadaS,tamanhoDoElementoEstruturanteDeteccaoDeBordas,0,1,1);
     
     imSomaBordas = imBordasK+imBordasS;
 
@@ -45,12 +45,12 @@ function trabalho2()
     figure, imshow(imPreenchida);
     set(gcf,'name','Preencher buracos','numbertitle','off');
     
-    imAbertura = abertura(imPreenchida,tamanhoDoElementoEstruturanteAbertura);
+%     imAbertura = abertura(imPreenchida,tamanhoDoElementoEstruturanteAbertura);
     
-    figure, imshow(imAbertura);
-    set(gcf,'name',['Abertura = ' num2str(tamanhoDoElementoEstruturanteAbertura)],'numbertitle','off');
+%     figure, imshow(imAbertura);
+%     set(gcf,'name',['Abertura = ' num2str(tamanhoDoElementoEstruturanteAbertura)],'numbertitle','off');
     
-    imRotulada = classificacao(imAbertura,imEntrada);
+    imRotulada = classificacaoNovos(imPreenchida,imEntrada);
     figure, imshow(imRotulada);
     set(gcf,'name','Rotulos','numbertitle','off');
     

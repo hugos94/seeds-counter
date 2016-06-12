@@ -12,7 +12,7 @@ function mostrarBandasDeCores(im,destinoSaida,salvarImagem)
     if salvarImagem == 1
         imwrite(im(:,:,1),[destinoSaida '/R.tif']);
         imwrite(im(:,:,2),[destinoSaida '/G.tif']);
-        imwrite(im(:,:,3),[destinoSaida '/B.tif']);
+        imwrite(im(:,:,3),[destinoSaida '/B.jpg']);
     end
     
     hsv = rgb2hsv(im);
@@ -122,5 +122,5 @@ function mostrarBandasDeCores(im,destinoSaida,salvarImagem)
         imwrite(CMYK(:,:,4),[destinoSaida '/K.tif']);
     end
     
-    % YIQ, L*a*b, NTSC, XYZ, YCbCr, Luv
+    % YIQ, L*a*b, NTSC, XYZ, YCbCr, Luv, CMYK
 end
