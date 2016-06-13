@@ -4,6 +4,13 @@ function imSaida = classificacaoNovos(imMascara,imEntrada)
     
     imSaida = zeros(size(imMascara));
     
+    feijao = 0;
+    uvapassa = 0;
+    uva = 0;
+    tomate = 0;
+    uvadedo = 0;
+    azeitona = 0;
+    
     imR = zeros(size(imMascara,1),size(imMascara,2),1);
     imG = zeros(size(imMascara,1),size(imMascara,2),1);
     imB = zeros(size(imMascara,1),size(imMascara,2),1);
@@ -62,6 +69,34 @@ function imSaida = classificacaoNovos(imMascara,imEntrada)
                 
         end
         
+        switch(pseudocor)
+        
+            case 1
+
+                feijao = feijao +1;
+
+            case 2
+
+                uvapassa = uvapassa+1;
+
+            case 3
+                
+                tomate = tomate+1;
+
+            case 4
+                
+                uvadedo = uvadedo+1;
+
+            case 5
+                
+                azeitona = azeitona+1;
+
+            case 6
+                
+                uva = uva+1;
+
+        end
+        
         fprintf(arquivoClassificacao,['area = ' num2str(area) ' r = ' num2str(modaR) ' g = ' num2str(modaG) ' b = ' num2str(modaB) ' ' tipo '\n']);
         
         [r,g,b] = pseudoCor(pseudocor);
@@ -75,5 +110,12 @@ function imSaida = classificacaoNovos(imMascara,imEntrada)
     imSaida(:,:,1) = imR;
     imSaida(:,:,2) = imG;
     imSaida(:,:,3) = imB;
+    
+    feijao
+    uvapassa
+    uva
+    tomate
+    uvadedo
+    azeitona
 
 end

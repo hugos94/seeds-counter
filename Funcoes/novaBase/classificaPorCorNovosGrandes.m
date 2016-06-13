@@ -80,7 +80,7 @@ function [saida,tipo] = classificaPorCorNovosGrandes(r,g,b)
         
     end
     
-    acumulador = sortrows(acumulador,-2)
+    acumulador = sortrows(acumulador,-2);
     
     maior = acumulador(1,2);
     segundoMaior = acumulador(2,2);
