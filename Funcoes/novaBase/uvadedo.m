@@ -88,7 +88,7 @@ function uvadedo()
         
     end
     
-    salvarFaixaDeCores(modaR,modaG,modaB,arquivoCorR,arquivoCorG,arquivoCorB);
+    salvarFaixaDeCores(destinoEntrada,modaR,modaG,modaB,arquivoCorR,arquivoCorG,arquivoCorB);
     
     imprimirDadosDeInteresseEmArquivo(arquivoMaiorEixo,arquivoArea,minMaiorEixo,maxMaiorEixo,minArea,maxArea);
     

@@ -1,4 +1,4 @@
-function salvarFaixaDeCores(modaR,modaG,modaB,arquivoCorR,arquivoCorG,arquivoCorB)
+function salvarFaixaDeCores(destino,modaR,modaG,modaB,arquivoCorR,arquivoCorG,arquivoCorB)
 
     maxR = max(modaR(:,1,1));
     minR = min(modaR(:,1,1));
@@ -14,5 +14,7 @@ function salvarFaixaDeCores(modaR,modaG,modaB,arquivoCorR,arquivoCorG,arquivoCor
     fprintf(arquivoCorG,'%d - %d\n',minG,maxG);
     
     fprintf(arquivoCorB,'%d - %d\n',minB,maxB);
+    
+%     criarPaletaDeCores(destino,minR,maxR,minG,maxG,minB,maxB);
 
 end

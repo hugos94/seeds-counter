@@ -1,4 +1,4 @@
-function saida = classificaPorCorNovosPequenos(r,g,b)
+function [saida,tipo] = classificaPorCorNovosPequenos(r,g,b)
 
     tipo = 'nenhum';
     pseudocor = 0;
@@ -13,8 +13,8 @@ function saida = classificaPorCorNovosPequenos(r,g,b)
     %2 - Feijao
     
     %pseudocor
-    acumulador(1,1) = 1;
-    acumulador(2,1) = 2;
+    acumulador(1,1) = 2;
+    acumulador(2,1) = 1;
     
     
     
@@ -59,7 +59,7 @@ function saida = classificaPorCorNovosPequenos(r,g,b)
         
     end
         
-    acumulador = sortrows(acumulador,-2);
+    acumulador = sortrows(acumulador,-2)
     
     maior = acumulador(1,2);
     segundoMaior = acumulador(2,2);
@@ -67,6 +67,18 @@ function saida = classificaPorCorNovosPequenos(r,g,b)
     if maior ~= segundoMaior
        
         pseudocor = acumulador(1,1);
+        
+    end
+    
+    switch(pseudocor)
+        
+        case 1
+            
+            tipo = 'feijao';
+            
+        case 2
+            
+            tipo = 'uva passa';
         
     end
     

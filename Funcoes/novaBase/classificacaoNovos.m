@@ -45,7 +45,7 @@ function imSaida = classificacaoNovos(imMascara,imEntrada)
            
             %tomate
 
-            pseudocor = 3
+            pseudocor = 3;
             
             tipo = 'tomate';
             
@@ -53,12 +53,12 @@ function imSaida = classificacaoNovos(imMascara,imEntrada)
            
             %Uva, Uva Dedo, Azeitona
 
-            pseudocor = classificaPorCorNovosGrandes(modaR,modaG,modaB)
+            [pseudocor,tipo] = classificaPorCorNovosGrandes(modaR,modaG,modaB);
             
 
         else
                 
-            pseudocor = classificaPorCorNovosPequenos(modaR,modaG,modaB)
+            [pseudocor,tipo] = classificaPorCorNovosPequenos(modaR,modaG,modaB);
                 
         end
         

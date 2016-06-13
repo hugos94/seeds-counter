@@ -1,4 +1,4 @@
-function saida = classificaPorCorNovosGrandes(r,g,b)
+function [saida,tipo] = classificaPorCorNovosGrandes(r,g,b)
 
     tipo = 'nenhum';
     pseudocor = 0;
@@ -80,7 +80,7 @@ function saida = classificaPorCorNovosGrandes(r,g,b)
         
     end
     
-    acumulador = sortrows(acumulador,-2);
+    acumulador = sortrows(acumulador,-2)
     
     maior = acumulador(1,2);
     segundoMaior = acumulador(2,2);
@@ -89,6 +89,21 @@ function saida = classificaPorCorNovosGrandes(r,g,b)
        
         pseudocor = acumulador(1,1);
         
+    end
+    
+    switch(pseudocor)
+        
+        case 6
+            
+            tipo = 'uva';
+            
+        case 5
+            
+            tipo = 'azeitona';
+            
+        case 4
+            
+            tipo = 'uva dedo';
     end
     
     saida = pseudocor;
