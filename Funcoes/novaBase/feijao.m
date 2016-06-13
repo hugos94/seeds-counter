@@ -4,7 +4,7 @@ function feijao()
 
     clc
 
-    qtImagens = 14;
+    qtImagens = 10;
     
     arquivoMaiorEixo = fopen(['../../Imagens/Sementes Individuais\Sementes Novas\Feijao/tamanhoDoMaiorEixo.txt'],'wt');
     arquivoArea = fopen(['../../Imagens/Sementes Individuais\Sementes Novas\Feijao/area.txt'],'wt');

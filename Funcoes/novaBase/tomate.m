@@ -4,7 +4,7 @@ function tomate()
 
     clc
 
-    qtImagens = 6;
+    qtImagens = 10;
     
     arquivoMaiorEixo = fopen(['../../Imagens/Sementes Individuais\Sementes Novas\Tomate/tamanhoDoMaiorEixo.txt'],'wt');
     arquivoArea = fopen(['../../Imagens/Sementes Individuais\Sementes Novas\Tomate/area.txt'],'wt');
@@ -42,7 +42,7 @@ function tomate()
 
     %     figure,imshow(imPreenchida),title(['Tomate ' num2str(i) ' preenchida']);
 
-        imMenosRuidosa = bwareaopen(imPreenchida,50);
+        imMenosRuidosa = bwareaopen(imPreenchida,500);
 
     %     figure,imshow(imMenosRuidosa),title(['Tomate ' num2str(i) ' menos ruidos']);
     

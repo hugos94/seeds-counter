@@ -61,14 +61,14 @@ function [r,g,b] = pseudoCor(valor)
             b = 0;
             
             
-        case 6%roxo
+        case 6%azul claro
             
             %morango
             %amendoim Juninho
             %Uva Novo
             
-            r = 102;
-            g = 0;
+            r = 0;
+            g = 191;
             b = 255;
         
     end

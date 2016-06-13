@@ -4,7 +4,7 @@ function uva()
 
     clc
 
-    qtImagens = 7;
+    qtImagens = 10;
     
     arquivoMaiorEixo = fopen(['../../Imagens/Sementes Individuais\Sementes Novas\Uva/tamanhoDoMaiorEixo.txt'],'wt');
     arquivoArea = fopen(['../../Imagens/Sementes Individuais\Sementes Novas\Uva/area.txt'],'wt');

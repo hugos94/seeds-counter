@@ -4,7 +4,7 @@ function uvadedo()
 
     clc
 
-    qtImagens = 7;
+    qtImagens = 10;
     
     arquivoMaiorEixo = fopen(['../../Imagens/Sementes Individuais\Sementes Novas\Uva Dedo/tamanhoDoMaiorEixo.txt'],'wt');
     arquivoArea = fopen(['../../Imagens/Sementes Individuais\Sementes Novas\Uva Dedo/area.txt'],'wt');

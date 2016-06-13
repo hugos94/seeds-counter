@@ -21,19 +21,19 @@ function [saida,tipo] = classificaPorCorNovosGrandes(r,g,b)
     
     
     %% R
-    if r >= 171 & r <= 189
+    if r >= 171 & r <= 190
         
         acumulador(1,2) = acumulador(1,2) + 1;
         
     end
     
-    if r >= 88 & r <= 97
+    if r >= 109 & r <= 139
         
         acumulador(2,2) = acumulador(2,2) + 1;
         
     end
     
-    if r >= 148 & r <= 191
+    if r >= 161 & r <= 182
         
         acumulador(3,2) = acumulador(3,2) + 1;
         
@@ -41,19 +41,19 @@ function [saida,tipo] = classificaPorCorNovosGrandes(r,g,b)
     
     %% G
     
-    if g >= 89 & g <= 95
+    if g >= 102 & g <= 111
         
         acumulador(1,2) = acumulador(1,2) + 1;
         
     end
     
-    if g >= 93 & g <= 100
+    if g >= 109 & g <= 139
         
         acumulador(2,2) = acumulador(2,2) + 1;
         
     end
     
-    if g >= 113 & g <= 141
+    if g >= 128 & g <= 151
         
         acumulador(3,2) = acumulador(3,2) + 1;
         
@@ -61,20 +61,20 @@ function [saida,tipo] = classificaPorCorNovosGrandes(r,g,b)
     
     %% B
     
-    if b >= 94 & b <= 100
+    if b >= 101 & b <= 118
         
         acumulador(1,2) = acumulador(1,2) + 1;
         
     end
     
-    if  b >= 97 & b <= 104
+    if  b >= 111 & b <= 140
         
         acumulador(2,2) = acumulador(2,2) + 1;
         
     end
     
 
-    if  b >= 65 & b <= 80
+    if  b >= 76 & b <= 97
         
         acumulador(3,2) = acumulador(3,2) + 1;
         

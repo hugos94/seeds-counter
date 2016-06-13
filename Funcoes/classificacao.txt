@@ -1,29 +1,18 @@
-area = 6617 r = 133 g = 131 b = 133 nenhum
-area = 15219 r = 218 g = 172 b = 106 uva passa
-area = 12384 r = 210 g = 164 b = 103 uva passa
-area = 5869 r = 130 g = 129 b = 130 nenhum
-area = 49340 r = 139 g = 139 b = 139 azeitona
-area = 6024 r = 125 g = 124 b = 122 nenhum
-area = 6766 r = 126 g = 126 b = 125 nenhum
-area = 6423 r = 124 g = 123 b = 122 nenhum
-area = 7685 r = 128 g = 127 b = 128 nenhum
-area = 13321 r = 139 g = 138 b = 136 nenhum
-area = 5845 r = 130 g = 129 b = 128 nenhum
-area = 13358 r = 214 g = 166 b = 106 uva passa
-area = 11877 r = 215 g = 163 b = 97 nenhum
-area = 16852 r = 212 g = 164 b = 91 nenhum
-area = 12319 r = 218 g = 167 b = 93 nenhum
-area = 10894 r = 216 g = 232 b = 100 nenhum
-area = 6030 r = 125 g = 125 b = 125 nenhum
-area = 6450 r = 127 g = 127 b = 127 nenhum
-area = 15150 r = 207 g = 166 b = 97 nenhum
-area = 6670 r = 119 g = 119 b = 119 nenhum
-area = 7398 r = 123 g = 123 b = 122 nenhum
-area = 12880 r = 205 g = 163 b = 97 feijao
-area = 6928 r = 129 g = 128 b = 129 nenhum
-area = 47305 r = 136 g = 138 b = 140 azeitona
-area = 21478 r = 136 g = 136 b = 136 azeitona
-area = 12762 r = 218 g = 159 b = 89 uva passa
-area = 13525 r = 211 g = 154 b = 86 uva passa
-area = 6488 r = 114 g = 116 b = 118 nenhum
-area = 5413 r = 121 g = 123 b = 125 nenhum
+area = 67054 r = 208 g = 117 b = 90 tomate
+area = 13071 r = 225 g = 172 b = 97 uva passa
+area = 12904 r = 215 g = 164 b = 99 uva passa
+area = 8560 r = 130 g = 142 b = 140 feijao
+area = 15961 r = 216 g = 167 b = 97 uva passa
+area = 14632 r = 203 g = 161 b = 101 uva passa
+area = 1299 r = 137 g = 137 b = 143 feijao
+area = 10801 r = 214 g = 164 b = 101 uva passa
+area = 72586 r = 223 g = 123 b = 97 tomate
+area = 68497 r = 204 g = 122 b = 97 tomate
+area = 10779 r = 217 g = 163 b = 97 uva passa
+area = 11445 r = 196 g = 150 b = 100 uva passa
+area = 78632 r = 207 g = 125 b = 98 tomate
+area = 11987 r = 215 g = 163 b = 101 uva passa
+area = 48101 r = 135 g = 139 b = 140 uva dedo
+area = 9725 r = 203 g = 160 b = 110 nenhum
+area = 10254 r = 209 g = 164 b = 113 uva passa
+area = 51230 r = 135 g = 140 b = 141 nenhum

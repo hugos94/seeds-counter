@@ -19,13 +19,13 @@ function [saida,tipo] = classificaPorCorNovosPequenos(r,g,b)
     
     
     %% R
-    if r >= 206 & r <= 224
+    if r >= 204 & r <= 218
         
         acumulador(1,2) = acumulador(1,2) + 1;
         
     end
     
-    if r >= 84 & r <= 93
+    if r >= 100 & r <= 137
         
         acumulador(2,2) = acumulador(2,2) + 1;
         
@@ -33,13 +33,13 @@ function [saida,tipo] = classificaPorCorNovosPequenos(r,g,b)
     
     %% G
     
-    if g >= 140 & g <= 155
+    if g >= 144 & g <= 169
         
         acumulador(1,2) = acumulador(1,2) + 1;
         
     end
     
-    if g >= 88 & g <= 99
+    if g >= 102 & g <= 135
         
         acumulador(2,2) = acumulador(2,2) + 1;
         
@@ -47,13 +47,13 @@ function [saida,tipo] = classificaPorCorNovosPequenos(r,g,b)
     
     %% B
     
-    if b >= 51 & b <= 65
+    if b >= 59 & b <= 101
         
         acumulador(1,2) = acumulador(1,2) + 1;
         
     end
     
-    if  b >= 91 & b <= 100
+    if  b >= 105 & b <= 136
         
         acumulador(2,2) = acumulador(2,2) + 1;
         

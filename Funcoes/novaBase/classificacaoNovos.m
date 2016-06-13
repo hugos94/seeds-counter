@@ -41,7 +41,7 @@ function imSaida = classificacaoNovos(imMascara,imEntrada)
         
         
         
-        if area >= 54494 %tamanho muito grande
+        if area >= 55338 %tamanho muito grande
            
             %tomate
 
@@ -49,14 +49,14 @@ function imSaida = classificacaoNovos(imMascara,imEntrada)
             
             tipo = 'tomate';
             
-        elseif area >= 20355 & area < 54494 %tamanho grande
+        elseif area >= 20632 & area < 55338 %tamanho grande
            
             %Uva, Uva Dedo, Azeitona
 
             [pseudocor,tipo] = classificaPorCorNovosGrandes(modaR,modaG,modaB);
             
 
-        else
+        else %tamanho grande
                 
             [pseudocor,tipo] = classificaPorCorNovosPequenos(modaR,modaG,modaB);
                 

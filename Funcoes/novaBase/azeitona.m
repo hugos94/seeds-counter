@@ -4,7 +4,7 @@ function azeitona()
 
     clc
 
-    qtImagens = 7;
+    qtImagens = 11;
     
     arquivoMaiorEixo = fopen(['../../Imagens/Sementes Individuais\Sementes Novas\Azeitona/tamanhoDoMaiorEixo.txt'],'wt');
     arquivoArea = fopen(['../../Imagens/Sementes Individuais\Sementes Novas\Azeitona/area.txt'],'wt');
