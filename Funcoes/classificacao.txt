@@ -1,15 +1,29 @@
-area = 46004 r = 166 g = 126 b = 75 azeitona
-area = 48658 r = 182 g = 103 b = 101 nenhum
-area = 36223 r = 165 g = 128 b = 77 azeitona
-area = 53947 r = 189 g = 105 b = 102 nenhum
-area = 34321 r = 177 g = 107 b = 108 nenhum
-area = 50433 r = 109 g = 110 b = 113 nenhum
-area = 36194 r = 109 g = 110 b = 112 nenhum
-area = 46564 r = 112 g = 116 b = 117 azeitona
-area = 34532 r = 172 g = 137 b = 82 azeitona
-area = 34047 r = 164 g = 131 b = 79 azeitona
-area = 52636 r = 187 g = 107 b = 110 nenhum
-area = 55170 r = 112 g = 117 b = 118 tomate
-area = 12518 r = 118 g = 114 b = 120 nenhum
-area = 43112 r = 170 g = 105 b = 110 azeitona
-area = 36095 r = 150 g = 122 b = 81 azeitona
+area = 6617 r = 133 g = 131 b = 133 nenhum
+area = 15219 r = 218 g = 172 b = 106 uva passa
+area = 12384 r = 210 g = 164 b = 103 uva passa
+area = 5869 r = 130 g = 129 b = 130 nenhum
+area = 49340 r = 139 g = 139 b = 139 azeitona
+area = 6024 r = 125 g = 124 b = 122 nenhum
+area = 6766 r = 126 g = 126 b = 125 nenhum
+area = 6423 r = 124 g = 123 b = 122 nenhum
+area = 7685 r = 128 g = 127 b = 128 nenhum
+area = 13321 r = 139 g = 138 b = 136 nenhum
+area = 5845 r = 130 g = 129 b = 128 nenhum
+area = 13358 r = 214 g = 166 b = 106 uva passa
+area = 11877 r = 215 g = 163 b = 97 nenhum
+area = 16852 r = 212 g = 164 b = 91 nenhum
+area = 12319 r = 218 g = 167 b = 93 nenhum
+area = 10894 r = 216 g = 232 b = 100 nenhum
+area = 6030 r = 125 g = 125 b = 125 nenhum
+area = 6450 r = 127 g = 127 b = 127 nenhum
+area = 15150 r = 207 g = 166 b = 97 nenhum
+area = 6670 r = 119 g = 119 b = 119 nenhum
+area = 7398 r = 123 g = 123 b = 122 nenhum
+area = 12880 r = 205 g = 163 b = 97 feijao
+area = 6928 r = 129 g = 128 b = 129 nenhum
+area = 47305 r = 136 g = 138 b = 140 azeitona
+area = 21478 r = 136 g = 136 b = 136 azeitona
+area = 12762 r = 218 g = 159 b = 89 uva passa
+area = 13525 r = 211 g = 154 b = 86 uva passa
+area = 6488 r = 114 g = 116 b = 118 nenhum
+area = 5413 r = 121 g = 123 b = 125 nenhum

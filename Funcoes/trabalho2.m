@@ -7,7 +7,7 @@ function trabalho2()
     tamanhoDoElementoEstruturanteFechamento = 1;
     removerElementosDeTamanho = 1000;
     
-    for i = 7:12
+    for i = 36:36
         
         imEntrada = imread(['..\Imagens\Segundo Trabalho\HDR Fonte Unica\' num2str(i) '.jpg']);
     
