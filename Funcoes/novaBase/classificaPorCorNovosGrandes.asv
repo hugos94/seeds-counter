@@ -27,7 +27,7 @@ function [saida,tipo] = classificaPorCorNovosGrandes(r,g,b)
         
     end
     
-    if r >= 1 & r <= 139
+    if r >= 107 & r <= 139
         
         acumulador(2,2) = acumulador(2,2) + 1;
         

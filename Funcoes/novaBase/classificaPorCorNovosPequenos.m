@@ -19,7 +19,7 @@ function [saida,tipo] = classificaPorCorNovosPequenos(r,g,b)
     
     
     %% R
-    if r >= 204 & r <= 218
+    if r >= 204 & r <= 255
         
         acumulador(1,2) = acumulador(1,2) + 1;
         
@@ -33,7 +33,7 @@ function [saida,tipo] = classificaPorCorNovosPequenos(r,g,b)
     
     %% G
     
-    if g >= 144 & g <= 169
+    if g >= 144 & g <= 255
         
         acumulador(1,2) = acumulador(1,2) + 1;
         
