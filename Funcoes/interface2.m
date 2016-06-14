@@ -105,7 +105,7 @@ global count
 global labels
 global labelsArray %Array com as Labels de todas as operações
 
-labels = {'Imagem Original'; 'Imagem Final';'';'';'';'';'';};
+labels = {'Imagem Original'; 'Detecção de Bordas';'Fechamento';'Abertura';'Preenchimento';'Abertura';'Classificação';};
 
 set(handles.contador_label, 'String', strcat('Quantidade de Sementes: ', num2str(0))); %Altera o contador de elementos encontrados
 
