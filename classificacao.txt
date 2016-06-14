@@ -1,0 +1,31 @@
+area = 5969 r = 132 g = 129 b = 129 feijao
+area = 43581 r = 179 g = 146 b = 94 azeitona
+area = 11260 r = 207 g = 163 b = 102 uva passa
+area = 7254 r = 127 g = 127 b = 126 feijao
+area = 5358 r = 122 g = 122 b = 122 feijao
+area = 5283 r = 126 g = 127 b = 121 feijao
+area = 6251 r = 126 g = 127 b = 121 feijao
+area = 6431 r = 127 g = 128 b = 123 feijao
+area = 29934 r = 171 g = 141 b = 92 azeitona
+area = 5628 r = 126 g = 125 b = 125 feijao
+area = 5838 r = 122 g = 122 b = 121 feijao
+area = 12320 r = 213 g = 164 b = 97 uva passa
+area = 32377 r = 178 g = 145 b = 94 azeitona
+area = 11631 r = 216 g = 168 b = 104 uva passa
+area = 10668 r = 214 g = 161 b = 94 uva passa
+area = 15861 r = 210 g = 163 b = 86 uva passa
+area = 9542 r = 213 g = 161 b = 97 uva passa
+area = 10702 r = 217 g = 166 b = 90 uva passa
+area = 6090 r = 125 g = 127 b = 127 feijao
+area = 5711 r = 124 g = 124 b = 124 feijao
+area = 34157 r = 179 g = 143 b = 93 azeitona
+area = 14539 r = 203 g = 162 b = 91 uva passa
+area = 35129 r = 176 g = 146 b = 92 azeitona
+area = 11893 r = 206 g = 159 b = 96 uva passa
+area = 6732 r = 124 g = 123 b = 124 feijao
+area = 7270 r = 123 g = 126 b = 125 feijao
+area = 32858 r = 174 g = 141 b = 91 azeitona
+area = 11741 r = 212 g = 157 b = 90 uva passa
+area = 12430 r = 212 g = 159 b = 90 uva passa
+area = 5567 r = 116 g = 121 b = 123 feijao
+area = 6642 r = 114 g = 119 b = 122 feijao
