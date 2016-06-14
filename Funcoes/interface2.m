@@ -22,7 +22,7 @@ function varargout = interface2(varargin)
 
 % Edit the above text to modify the response to help interface2
 
-% Last Modified by GUIDE v2.5 13-Jun-2016 19:24:10
+% Last Modified by GUIDE v2.5 13-Jun-2016 20:30:04
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -59,15 +59,21 @@ guidata(hObject, handles);
 
 % This sets up the initial plot - only do when we are invisible
 % so window can get raised using interface2.
-if strcmp(get(hObject,'Visible'),'off')
-    plot(rand(5));
-end
 
 % UIWAIT makes interface2 wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
 global count
+global tamanhoDoElementoEstruturanteDeteccaoDeBordas
+global tamanhoDoElementoEstruturanteFechamento
+global removerElementosDeTamanho
+global removerElementosDeTamanho2
+
 count = 0;
+tamanhoDoElementoEstruturanteDeteccaoDeBordas = 1;
+tamanhoDoElementoEstruturanteFechamento = 1;
+removerElementosDeTamanho = 1000;
+removerElementosDeTamanho2= 2150;
 
 
 % --- Outputs from this function are returned to the command line.
@@ -99,7 +105,7 @@ global count
 global labels
 global labelsArray %Array com as Labels de todas as operações
 
-labels = {'Imagem Original'; 'Imagem Final';};
+labels = {'Imagem Original'; 'Imagem Final';'';'';'';'';'';};
 
 set(handles.contador_label, 'String', strcat('Quantidade de Sementes: ', num2str(0))); %Altera o contador de elementos encontrados
 
@@ -109,12 +115,19 @@ cla(handles.axes2); %Limpa o axes 2
 [filename,canceled] = imgetfile;
 if ~canceled
     count = 1;
-    handles.proportion = '1';
-    set(handles.axes1, 'visible', 'on');
+    imgsArray = [];
+    labelsArray = [];
+    
     handles.arquivo = filename;
-    handles.image = imread(filename);
-    axes(handles.axes1);
-    imshow(handles.image);
+    handles.atual = imread(filename);
+
+    imgsArray{count} = handles.atual;
+    trocaHandles( hObject, handles );
+    
+    labelsArray{count} = labels(1);
+    set(handles.anterior_label, 'String', 'Anterior'); %Altera o contador de elementos encontrados
+    set(handles.proximo_label, 'String', labelsArray{count}); %Altera o contador de elementos encontrados
+
 end
 
 handles.px2min = NaN;
@@ -125,50 +138,247 @@ function save_file_Callback(hObject, eventdata, handles)
 % hObject    handle to save_file (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-printdlg(handles.figure1)
 
-% --------------------------------------------------------------------
-function CloseMenuItem_Callback(hObject, eventdata, handles)
-% hObject    handle to CloseMenuItem (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-selection = questdlg(['Close ' get(handles.figure1,'Name') '?'],...
-                     ['Close ' get(handles.figure1,'Name') '...'],...
-                     'Yes','No','Yes');
-if strcmp(selection,'No')
-    return;
-end
+global imgsArray
+global count
 
-delete(handles.figure1)
-
-
-% --- Executes on selection change in popupmenu1.
-function popupmenu1_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = get(hObject,'String') returns popupmenu1 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu1
-
-
-% --- Executes during object creation, after setting all properties.
-function popupmenu1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-     set(hObject,'BackgroundColor','white');
-end
-
-set(hObject, 'String', {'plot(rand(5))', 'plot(sin(1:0.01:25))', 'bar(1:.5:10)', 'plot(membrane)', 'surf(peaks)'});
-
+    if count > 0
+        [path_file, user_cancel] = imsave();
+        if ~user_cancel
+            imwrite(imgsArray{count}, path_file);
+            handles.px2min = NaN;
+            guidata(hObject, handles);
+        end
+    else
+        msgbox('Imagem atual não foi gerada!', 'Error', 'Error');
+    end
 
 % --- Executes on button press in next_button.
 function next_button_Callback(hObject, eventdata, handles)
 % hObject    handle to next_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+global imgsArray
+    global count
+    global labels
+    global labelsArray
+    global tamanhoDoElementoEstruturanteDeteccaoDeBordas
+    global tamanhoDoElementoEstruturanteFechamento
+    global removerElementosDeTamanho
+    global removerElementosDeTamanho2
+    
+    count = count + 1;
+    
+    switch count
+        case 2
+            if isfield( handles, 'atual' )
+                
+                CMYK = rgb2cmyk(imgsArray{count - 1});
+
+                K = CMYK(:,:,4);
+
+                hsv = rgb2hsv(imgsArray{count - 1});
+
+                s = hsv(:,:,2);
+                
+                imSuavizadaK = filtroMediana(K);
+
+                imSuavizadaS = filtroMediana(s);
+
+                imBordasK = detectarBordasBanda(imSuavizadaK,tamanhoDoElementoEstruturanteDeteccaoDeBordas,1,1,1);
+
+                imBordasS = detectarBordasBanda(imSuavizadaS,tamanhoDoElementoEstruturanteDeteccaoDeBordas,0,1,1);
+
+                imSomaBordas = imBordasK+imBordasS;
+                
+                imgsArray{count} = imSomaBordas;
+                trocaHandles(hObject, handles);
+                
+                labelsArray{count} = labels(count);
+                set(handles.anterior_label, 'String', labelsArray{count - 1}); %Altera o contador de elementos encontrados
+                set(handles.proximo_label, 'String', labelsArray{count}); %Altera o contador de elementos encontrados
+            else
+                msgbox('Imagem não foi carregada!', 'Error', 'Error');
+            end
+            
+        case 3
+            if isfield( handles, 'atual' )
+                imgsArray{count} = fechamento(imgsArray{count - 1},tamanhoDoElementoEstruturanteFechamento);
+                trocaHandles(hObject, handles);
+                
+                labelsArray{count} = labels(count);
+                set(handles.anterior_label, 'String', labelsArray{count - 1}); %Altera o contador de elementos encontrados
+                set(handles.proximo_label, 'String', labelsArray{count}); %Altera o contador de elementos encontrados
+            else
+                msgbox('Imagem não foi carregada!', 'Error', 'Error');
+            end
+            
+        case 4
+            if isfield( handles, 'atual' )
+                imgsArray{count} = bwareaopen(imgsArray{count - 1},removerElementosDeTamanho);
+                trocaHandles(hObject, handles);
+                
+                labelsArray{count} = labels(count);
+                set(handles.anterior_label, 'String', labelsArray{count - 1}); %Altera o contador de elementos encontrados
+                set(handles.proximo_label, 'String', labelsArray{count}); %Altera o contador de elementos encontrados
+            else
+                msgbox('Imagem não foi carregada!', 'Error', 'Error');
+            end
+            
+        case 5
+            if isfield( handles, 'atual' )
+                imgsArray{count} = preencherEspacos(imgsArray{count - 1},8);
+                trocaHandles(hObject, handles);
+                
+                labelsArray{count} = labels(count);
+                set(handles.anterior_label, 'String', labelsArray{count - 1}); %Altera o contador de elementos encontrados
+                set(handles.proximo_label, 'String', labelsArray{count}); %Altera o contador de elementos encontrados
+            else
+                msgbox('Imagem não foi carregada!', 'Error', 'Error');
+            end
+            
+            case 6
+            if isfield( handles, 'atual' )
+                imgsArray{count} = bwareaopen(imgsArray{count - 1},removerElementosDeTamanho2);
+                trocaHandles(hObject, handles);
+                
+                labelsArray{count} = labels(count);
+                set(handles.anterior_label, 'String', labelsArray{count - 1}); %Altera o contador de elementos encontrados
+                set(handles.proximo_label, 'String', labelsArray{count}); %Altera o contador de elementos encontrados
+            else
+                msgbox('Imagem não foi carregada!', 'Error', 'Error');
+            end
+            
+            case 7
+            if isfield( handles, 'atual' )
+                imgsArray{count} = classificacaoNovos(imgsArray{count - 1},imgsArray{1});
+                trocaHandles(hObject, handles);
+                
+                labelsArray{count} = labels(count);
+                set(handles.anterior_label, 'String', labelsArray{count - 1}); %Altera o contador de elementos encontrados
+                set(handles.proximo_label, 'String', labelsArray{count}); %Altera o contador de elementos encontrados
+            else
+                msgbox('Imagem não foi carregada!', 'Error', 'Error');
+            end
+    end
+    
+    
+    
+%     for i = 1:9
+%         disp(i);
+%         imEntrada = imread(['..\Imagens\Segundo Trabalho\HDR Fonte Unica\' num2str(i) '.jpg']);
+%     
+%         CMYK = rgb2cmyk(imEntrada);
+% 
+%         K = CMYK(:,:,4);
+% 
+%         hsv = rgb2hsv(imEntrada);
+% 
+%         s = hsv(:,:,2);
+% 
+%         imSuavizadaK = filtroMediana(K);
+% 
+%         imSuavizadaS = filtroMediana(s);
+% 
+%         imBordasK = detectarBordasBanda(imSuavizadaK,tamanhoDoElementoEstruturanteDeteccaoDeBordas,1,1,1);
+% 
+%         imBordasS = detectarBordasBanda(imSuavizadaS,tamanhoDoElementoEstruturanteDeteccaoDeBordas,0,1,1);
+% 
+%         imSomaBordas = imBordasK+imBordasS;
+% 
+%     %     figure, imshow(imSomaBordas);
+%     %     set(gcf,'name','Bordas','numbertitle','off');
+% 
+%         imFechamento = fechamento(imSomaBordas,tamanhoDoElementoEstruturanteFechamento);
+% 
+%     %     figure, imshow(imFechamento);
+%     %     set(gcf,'name','Fechamento','numbertitle','off');
+% 
+%         imSemRuidos1 = bwareaopen(imFechamento,removerElementosDeTamanho);
+% 
+%     %     figure, imshow(imSemRuidos2);
+%     %     set(gcf,'name',['Removendo componentes menores = ' num2str(removerElementosDeTamanho)],'numbertitle','off');
+% 
+%         imPreenchida = preencherEspacos(imSemRuidos1,8); % parametro tamanho do elemento estruturante
+% 
+%         
+%         imSemRuidos2 = bwareaopen(imPreenchida,removerElementosDeTamanho2);
+%         
+%         %     figure, imshow(imSemRuidos2);
+%     %     set(gcf,'name',['Removendo componentes menores = ' num2str(removerElementosDeTamanho)],'numbertitle','off');
+% 
+%     %     figure, imshow(imPreenchida);
+%     %     set(gcf,'name','Preencher buracos','numbertitle','off');
+% 
+%     %     imErodida = erosao(imPreenchida,tamanhoDoElementoEstruturanteErosao);
+% 
+%     %     figure, imshow(imErodida);
+%     %     set(gcf,'name',['Erosao = ' num2str(tamanhoDoElementoEstruturanteErosao)],'numbertitle','off');
+% 
+%         imRotulada = classificacaoNovos(imSemRuidos2,imEntrada);
+%         figure, imshow(imRotulada);
+%         set(gcf,'name','Rotulos','numbertitle','off');
+%     
+%     end
+
+
+function trocaHandles(hObject, handles)
+    global count
+    global imgsArray
+    
+    if count > 1
+        % Imagem Anterior
+        axes(handles.axes1);
+        imshow(imgsArray{count - 1});
+        handles.px2min = NaN;
+        guidata(hObject, handles);
+        
+        % Imagem Atual
+        axes(handles.axes2);
+        imshow(imgsArray{count});
+        handles.px2min = NaN;
+        guidata(hObject, handles);
+    elseif count == 1
+        % Imagem Anterior
+        axes(handles.axes1);
+        imshow([]);
+        handles.px2min = NaN;
+        guidata(hObject, handles);
+        
+        % Imagem Atual
+        axes(handles.axes2);
+        imshow(imgsArray{count});
+        handles.px2min = NaN;
+        guidata(hObject, handles);
+    end
+
+
+% --- Executes on button press in previous_button.
+function previous_button_Callback(hObject, eventdata, handles)
+% hObject    handle to previous_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+global imgsArray
+    global count
+    global labelsArray
+
+    % Nao tenta retirar a imagem lida
+    if count > 1
+        imgsArray{count} = [];  % Apaga imagem atual do array
+        labelsArray{count} = [];  % Apaga texto atual do array
+        count = count - 1;      % Volta 1 imagem
+        
+        % Troca texto atual pelo anterior e anterior por uma mais anterior ainda
+        if count ~= 1
+            set(handles.anterior_label, 'String', labelsArray{count - 1}); %Altera o contador de elementos encontrados
+        else
+            set(handles.anterior_label, 'String', 'Anterior'); %Altera o contador de elementos encontrados
+        end
+        set(handles.proximo_label, 'String', labelsArray{count}); %Altera o contador de elementos encontrados
+
+        % Troca imagem atual pela anterior e anterior por uma mais anterior ainda
+        trocaHandles(hObject, handles);
+    end
+

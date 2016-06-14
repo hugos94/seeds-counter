@@ -1,18 +1,25 @@
-area = 67021 r = 217 g = 118 b = 90 tomate
-area = 12557 r = 226 g = 174 b = 99 uva passa
-area = 12787 r = 216 g = 165 b = 99 uva passa
-area = 43619 r = 138 g = 138 b = 138 uva dedo
-area = 15794 r = 218 g = 169 b = 99 uva passa
-area = 14022 r = 203 g = 163 b = 102 uva passa
-area = 10945 r = 215 g = 167 b = 105 uva passa
-area = 72323 r = 224 g = 123 b = 97 tomate
-area = 69280 r = 204 g = 122 b = 97 tomate
-area = 11256 r = 219 g = 165 b = 99 uva passa
-area = 11665 r = 198 g = 151 b = 101 uva passa
-area = 10599 r = 208 g = 159 b = 99 uva passa
-area = 67765 r = 224 g = 126 b = 102 tomate
-area = 11801 r = 218 g = 164 b = 102 uva passa
-area = 48069 r = 136 g = 139 b = 141 uva dedo
-area = 10158 r = 205 g = 162 b = 111 uva passa
-area = 10169 r = 209 g = 167 b = 115 uva passa
-area = 50978 r = 136 g = 141 b = 142 uva dedo
+area = 42472 r = 170 g = 132 b = 78 azeitona
+area = 11702 r = 208 g = 146 b = 66 uva passa
+area = 46191 r = 184 g = 107 b = 106 uva
+area = 33809 r = 165 g = 129 b = 78 azeitona
+area = 11977 r = 213 g = 146 b = 61 uva passa
+area = 50549 r = 188 g = 110 b = 105 uva
+area = 9940 r = 216 g = 147 b = 53 uva passa
+area = 32144 r = 168 g = 107 b = 112 uva
+area = 47331 r = 183 g = 109 b = 110 uva
+area = 9761 r = 255 g = 148 b = 64 uva passa
+area = 34350 r = 164 g = 132 b = 79 azeitona
+area = 35451 r = 170 g = 136 b = 81 azeitona
+area = 10876 r = 211 g = 145 b = 66 uva passa
+area = 11668 r = 208 g = 149 b = 69 uva passa
+area = 7746 r = 215 g = 144 b = 59 uva passa
+area = 31989 r = 162 g = 129 b = 77 azeitona
+area = 48316 r = 185 g = 108 b = 112 uva
+area = 10525 r = 210 g = 145 b = 66 uva passa
+area = 10342 r = 216 g = 155 b = 79 uva passa
+area = 39653 r = 175 g = 111 b = 118 uva
+area = 14572 r = 210 g = 150 b = 71 uva passa
+area = 37471 r = 163 g = 127 b = 76 azeitona
+area = 12528 r = 216 g = 158 b = 80 uva passa
+area = 40071 r = 172 g = 109 b = 114 uva
+area = 32532 r = 155 g = 127 b = 88 azeitona

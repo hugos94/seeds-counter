@@ -1,6 +1,6 @@
 function imSaida = classificacaoNovos(imMascara,imEntrada)
 
-    figure, imshow(imEntrada);
+    %figure, imshow(imEntrada);
     
     imSaida = zeros(size(imMascara));
     
