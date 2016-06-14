@@ -1,25 +1,32 @@
-area = 42472 r = 170 g = 132 b = 78 azeitona
-area = 11702 r = 208 g = 146 b = 66 uva passa
-area = 46191 r = 184 g = 107 b = 106 uva
-area = 33809 r = 165 g = 129 b = 78 azeitona
-area = 11977 r = 213 g = 146 b = 61 uva passa
-area = 50549 r = 188 g = 110 b = 105 uva
-area = 9940 r = 216 g = 147 b = 53 uva passa
-area = 32144 r = 168 g = 107 b = 112 uva
-area = 47331 r = 183 g = 109 b = 110 uva
-area = 9761 r = 255 g = 148 b = 64 uva passa
-area = 34350 r = 164 g = 132 b = 79 azeitona
-area = 35451 r = 170 g = 136 b = 81 azeitona
-area = 10876 r = 211 g = 145 b = 66 uva passa
-area = 11668 r = 208 g = 149 b = 69 uva passa
-area = 7746 r = 215 g = 144 b = 59 uva passa
-area = 31989 r = 162 g = 129 b = 77 azeitona
-area = 48316 r = 185 g = 108 b = 112 uva
-area = 10525 r = 210 g = 145 b = 66 uva passa
-area = 10342 r = 216 g = 155 b = 79 uva passa
-area = 39653 r = 175 g = 111 b = 118 uva
-area = 14572 r = 210 g = 150 b = 71 uva passa
-area = 37471 r = 163 g = 127 b = 76 azeitona
-area = 12528 r = 216 g = 158 b = 80 uva passa
-area = 40071 r = 172 g = 109 b = 114 uva
-area = 32532 r = 155 g = 127 b = 88 azeitona
+area = 71833 r = 203 g = 122 b = 98 tomate
+area = 6563 r = 133 g = 131 b = 131 feijao
+area = 13071 r = 215 g = 170 b = 104 uva passa
+area = 11202 r = 211 g = 162 b = 104 uva passa
+area = 5677 r = 133 g = 129 b = 130 feijao
+area = 6488 r = 128 g = 124 b = 122 feijao
+area = 6011 r = 124 g = 123 b = 121 feijao
+area = 61502 r = 210 g = 121 b = 84 tomate
+area = 65704 r = 207 g = 124 b = 82 tomate
+area = 7505 r = 129 g = 124 b = 122 feijao
+area = 6313 r = 123 g = 120 b = 121 feijao
+area = 5732 r = 131 g = 131 b = 132 feijao
+area = 11733 r = 219 g = 169 b = 109 uva passa
+area = 10181 r = 218 g = 168 b = 98 uva passa
+area = 15270 r = 211 g = 163 b = 96 uva passa
+area = 9027 r = 218 g = 170 b = 104 uva passa
+area = 10453 r = 221 g = 170 b = 96 uva passa
+area = 5991 r = 130 g = 130 b = 130 feijao
+area = 5614 r = 132 g = 132 b = 128 feijao
+area = 13514 r = 204 g = 161 b = 91 uva passa
+area = 6511 r = 122 g = 122 b = 122 feijao
+area = 7213 r = 124 g = 122 b = 121 feijao
+area = 10729 r = 212 g = 158 b = 95 uva passa
+area = 6589 r = 127 g = 125 b = 123 feijao
+area = 72081 r = 233 g = 115 b = 88 tomate
+area = 69114 r = 228 g = 119 b = 87 tomate
+area = 64601 r = 233 g = 118 b = 84 tomate
+area = 10342 r = 214 g = 154 b = 79 uva passa
+area = 5798 r = 121 g = 117 b = 122 feijao
+area = 5121 r = 121 g = 119 b = 123 feijao
+area = 10084 r = 212 g = 146 b = 77 uva passa
+area = 60211 r = 233 g = 114 b = 83 tomate
