@@ -1,4 +1,4 @@
-function [imSaida, feijao, uvapassa, uva, tomate, uvadedo, azeitona, numeroDeRotulos] = classificacaoNovos(imMascara,imEntrada)
+function [imSaida, feijao, uvapassa, uva, tomate, uvadedo, azeitona] = classificacaoNovos(imMascara,imEntrada)
 
     %figure, imshow(imEntrada);
     
@@ -72,21 +72,27 @@ function [imSaida, feijao, uvapassa, uva, tomate, uvadedo, azeitona, numeroDeRot
         switch(pseudocor)
         
             case 1
+
                 feijao = feijao +1;
 
             case 2
+
                 uvapassa = uvapassa+1;
 
             case 3
+                
                 tomate = tomate+1;
 
             case 4
+                
                 uvadedo = uvadedo+1;
 
             case 5
+                
                 azeitona = azeitona+1;
 
             case 6
+                
                 uva = uva+1;
 
         end
@@ -104,5 +110,12 @@ function [imSaida, feijao, uvapassa, uva, tomate, uvadedo, azeitona, numeroDeRot
     imSaida(:,:,1) = imR;
     imSaida(:,:,2) = imG;
     imSaida(:,:,3) = imB;
+    
+    feijao
+    uvapassa
+    uva
+    tomate
+    uvadedo
+    azeitona
 
 end

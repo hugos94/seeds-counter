@@ -22,7 +22,7 @@ function varargout = interface2(varargin)
 
 % Edit the above text to modify the response to help interface2
 
-% Last Modified by GUIDE v2.5 13-Jun-2016 20:30:04
+% Last Modified by GUIDE v2.5 13-Jun-2016 21:31:27
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -127,6 +127,14 @@ if ~canceled
     labelsArray{count} = labels(1);
     set(handles.anterior_label, 'String', 'Anterior'); %Altera o contador de elementos encontrados
     set(handles.proximo_label, 'String', labelsArray{count}); %Altera o contador de elementos encontrados
+    
+    set(handles.feijao_input, 'String', strcat('Feijão: ', num2str(0))); %Altera o contador de elementos encontrados
+	set(handles.uvapassa_input, 'String', strcat('Uva Passa: ', num2str(0))); %Altera o contador de elementos encontrados
+    set(handles.uva_input, 'String', strcat('Uva: ', num2str(0))); %Altera o contador de elementos encontrados
+    set(handles.tomate_input, 'String', strcat('Tomate: ', num2str(0))); %Altera o contador de elementos encontrados
+    set(handles.uvadedo_input, 'String', strcat('Uva Dedo: ', num2str(0))); %Altera o contador de elementos encontrados
+    set(handles.azeitona_input, 'String', strcat('Azeitona: ', num2str(0))); %Altera o contador de elementos encontrados
+    set(handles.contador_label, 'String', strcat('Quantidade de Sementes: ', num2str(0))); %Altera o contador de elementos encontrados
 
 end
 
@@ -238,7 +246,7 @@ global imgsArray
                 msgbox('Imagem não foi carregada!', 'Error', 'Error');
             end
             
-            case 6
+        case 6
             if isfield( handles, 'atual' )
                 imgsArray{count} = bwareaopen(imgsArray{count - 1},removerElementosDeTamanho2);
                 trocaHandles(hObject, handles);
@@ -250,10 +258,19 @@ global imgsArray
                 msgbox('Imagem não foi carregada!', 'Error', 'Error');
             end
             
-            case 7
+        case 7
             if isfield( handles, 'atual' )
-                imgsArray{count} = classificacaoNovos(imgsArray{count - 1},imgsArray{1});
+                [imgsArray{count}, feijao, uvapassa, uva, tomate, uvadedo, azeitona, numeroDeRotulos] = classificacaoNovos(imgsArray{count - 1},imgsArray{1});
                 trocaHandles(hObject, handles);
+                
+                set(handles.feijao_input, 'String', strcat('Feijão: ', num2str(feijao))); %Altera o contador de elementos encontrados
+                set(handles.uvapassa_input, 'String', strcat('Uva Passa: ', num2str(uvapassa))); %Altera o contador de elementos encontrados
+                set(handles.uva_input, 'String', strcat('Uva: ', num2str(uva))); %Altera o contador de elementos encontrados
+                set(handles.tomate_input, 'String', strcat('Tomate: ', num2str(tomate))); %Altera o contador de elementos encontrados
+                set(handles.uvadedo_input, 'String', strcat('Uva Dedo: ', num2str(uvadedo))); %Altera o contador de elementos encontrados
+                set(handles.azeitona_input, 'String', strcat('Azeitona: ', num2str(azeitona))); %Altera o contador de elementos encontrados
+                set(handles.contador_label, 'String', strcat('Quantidade de Sementes: ', num2str(numeroDeRotulos))); %Altera o contador de elementos encontrados
+
                 
                 labelsArray{count} = labels(count);
                 set(handles.anterior_label, 'String', labelsArray{count - 1}); %Altera o contador de elementos encontrados
@@ -262,66 +279,6 @@ global imgsArray
                 msgbox('Imagem não foi carregada!', 'Error', 'Error');
             end
     end
-    
-    
-    
-%     for i = 1:9
-%         disp(i);
-%         imEntrada = imread(['..\Imagens\Segundo Trabalho\HDR Fonte Unica\' num2str(i) '.jpg']);
-%     
-%         CMYK = rgb2cmyk(imEntrada);
-% 
-%         K = CMYK(:,:,4);
-% 
-%         hsv = rgb2hsv(imEntrada);
-% 
-%         s = hsv(:,:,2);
-% 
-%         imSuavizadaK = filtroMediana(K);
-% 
-%         imSuavizadaS = filtroMediana(s);
-% 
-%         imBordasK = detectarBordasBanda(imSuavizadaK,tamanhoDoElementoEstruturanteDeteccaoDeBordas,1,1,1);
-% 
-%         imBordasS = detectarBordasBanda(imSuavizadaS,tamanhoDoElementoEstruturanteDeteccaoDeBordas,0,1,1);
-% 
-%         imSomaBordas = imBordasK+imBordasS;
-% 
-%     %     figure, imshow(imSomaBordas);
-%     %     set(gcf,'name','Bordas','numbertitle','off');
-% 
-%         imFechamento = fechamento(imSomaBordas,tamanhoDoElementoEstruturanteFechamento);
-% 
-%     %     figure, imshow(imFechamento);
-%     %     set(gcf,'name','Fechamento','numbertitle','off');
-% 
-%         imSemRuidos1 = bwareaopen(imFechamento,removerElementosDeTamanho);
-% 
-%     %     figure, imshow(imSemRuidos2);
-%     %     set(gcf,'name',['Removendo componentes menores = ' num2str(removerElementosDeTamanho)],'numbertitle','off');
-% 
-%         imPreenchida = preencherEspacos(imSemRuidos1,8); % parametro tamanho do elemento estruturante
-% 
-%         
-%         imSemRuidos2 = bwareaopen(imPreenchida,removerElementosDeTamanho2);
-%         
-%         %     figure, imshow(imSemRuidos2);
-%     %     set(gcf,'name',['Removendo componentes menores = ' num2str(removerElementosDeTamanho)],'numbertitle','off');
-% 
-%     %     figure, imshow(imPreenchida);
-%     %     set(gcf,'name','Preencher buracos','numbertitle','off');
-% 
-%     %     imErodida = erosao(imPreenchida,tamanhoDoElementoEstruturanteErosao);
-% 
-%     %     figure, imshow(imErodida);
-%     %     set(gcf,'name',['Erosao = ' num2str(tamanhoDoElementoEstruturanteErosao)],'numbertitle','off');
-% 
-%         imRotulada = classificacaoNovos(imSemRuidos2,imEntrada);
-%         figure, imshow(imRotulada);
-%         set(gcf,'name','Rotulos','numbertitle','off');
-%     
-%     end
-
 
 function trocaHandles(hObject, handles)
     global count
@@ -381,4 +338,3 @@ global imgsArray
         % Troca imagem atual pela anterior e anterior por uma mais anterior ainda
         trocaHandles(hObject, handles);
     end
-
